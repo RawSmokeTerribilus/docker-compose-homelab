@@ -1,0 +1,178 @@
+# ||--------------------------------------------------------------------------------||
+# ||                               Other Applications                               ||
+# ||--------------------------------------------------------------------------------||
+
+version: "3.9"
+
+services:
+  paperless-ngx:
+    image: lscr.io/linuxserver/paperless-ngx:latest
+    container_name: paperless-ngx
+    hostname: paperless-ngx
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+      - REDIS_URL=
+    networks:
+      - media
+    volumes:
+      - ${CONFIG_BASE_DIR}/paperless-ngx:/config
+      - ${DOCUMENTS_DIR_LOCAL}/paperless-ngx:/data
+    ports:
+      - 8001:8000
+    restart: unless-stopped
+
+  # searxng:
+  #   image: searxng/searxng:latest
+  #   container_name: searxng
+  #   hostname: searxng
+  #   environment:
+  #     - PGID=${PGID}
+  #     - PUID=${PUID}
+  #     - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
+  #     - TZ=${TZ}
+  #     - UMASK=${UMASK}
+  #   cap_drop:
+  #     - ALL
+  #   cap_add:
+  #     - CHOWN
+  #     - SETGID
+  #     - SETUID
+  #   logging:
+  #     driver: json-file
+  #     options:
+  #       max-size: 1m
+  #       max-file: 1
+  #   networks:
+  #     - media
+  #   volumes:
+  #     - ${CONFIG_BASE_DIR}/searxng:/etc/searxng:rw
+  #   ports:
+  #     - 8082:8080
+  #   restart: unless-stopped
+
+  syncthing:
+    image: lscr.io/linuxserver/syncthing:latest
+    container_name: syncthing
+    hostname: syncthing
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    network_mode: host
+    volumes:
+      - ${CONFIG_BASE_DIR}/syncthing:/config
+      - ${SYNCTHING_MOUNT_DIR_1_LOCAL}:${SYNCTHING_MOUNT_DIR_1_RELATIVE}
+      - ${SYNCTHING_MOUNT_DIR_2_LOCAL}:${SYNCTHING_MOUNT_DIR_2_RELATIVE}
+    restart: unless-stopped
+
+  tailscale:
+    image: tailscale/tailscale:latest
+    container_name: tailscale
+    hostname: ${TAILSCALE_HOSTNAME}
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_MODULE
+    privileged: true
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TAILSCALE_HOSTNAME=${TAILSCALE_HOSTNAME:?err}
+      - TAILSCALE_STATE_ARG=${TAILSCALE_STATE_ARG}
+      - TS_ACCEPT_DNS=${TS_ACCEPT_DNS}
+      - TS_AUTHKEY=${TS_AUTHKEY:?err}
+      - TS_DEST_IP=${TS_DEST_IP}
+      - TS_EXTRA_ARGS=${TS_EXTRA_ARGS}
+      - TS_KUBE_SECRET=${TS_KUBE_SECRET}
+      - TS_OUTBOUND_HTTP_PROXY_LISTEN=${TS_OUTBOUND_HTTP_PROXY_LISTEN}
+      - TS_ROUTES=${TS_ROUTES}
+      - TS_SOCKET=${TS_SOCKET}
+      - TS_SOCKS5_SERVER=${TS_SOCKS5_SERVER}
+      - TS_STATE_DIR=${TS_STATE_DIR}
+      - TS_TAILSCALED_EXTRA_ARGS=${TS_TAILSCALED_EXTRA_ARGS}
+      - TS_USERSPACE=${TS_USERSPACE}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    network_mode: host
+    volumes:
+      - ${CONFIG_BASE_DIR}/tailscale/varlib:/var/lib
+      - /dev/net/tun:/dev/net/tun
+      - ${CONFIG_BASE_DIR}/tailscale/tmp:/tmp
+    restart: unless-stopped
+
+  # wallabag:
+  #   image: wallabag/wallabag
+  #   container_name: wallabag
+  #   hostname: wallabag
+  #   depends_on:
+  #     - wallabag_db
+  #     - wallabag_redis
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=${WALLABAG_DATABASE_ROOT_PASSWORD}
+  #     - SYMFONY__ENV__DATABASE_DRIVER=pdo_mysql
+  #     - SYMFONY__ENV__DATABASE_HOST=wallabag-db
+  #     - SYMFONY__ENV__DATABASE_PORT=3306
+  #     - SYMFONY__ENV__DATABASE_NAME=${WALLABAG_DATABASE_NAME}
+  #     - SYMFONY__ENV__DATABASE_USER=${WALLABAG_DATABASE_USER}
+  #     - SYMFONY__ENV__DATABASE_PASSWORD=${WALLABAG_DATABASE_PASSWORD}
+  #     - SYMFONY__ENV__DATABASE_CHARSET=utf8mb4
+  #     - SYMFONY__ENV__DATABASE_TABLE_PREFIX="wallabag_"
+  #     - SYMFONY__ENV__MAILER_DSN=smtp://127.0.0.1
+  #     - SYMFONY__ENV__FROM_EMAIL=${WALLABAG_FROM_EMAIL}
+  #     - SYMFONY__ENV__DOMAIN_NAME=${WALLABAG_DOMAIN_NAME}
+  #     - SYMFONY__ENV__SERVER_NAME=${WALLABAG_SERVER_NAME:-wallabag}
+  #   networks:
+  #     - media
+  #   ports:
+  #     - 8092:80
+  #   volumes:
+  #     - ${CONFIG_BASE_DIR}/wallabag/images:/var/www/wallabag/web/assets/images
+  #   healthcheck:
+  #     test: ["CMD", "wget" ,"--no-verbose", "--tries=1", "--spider", "http://localhost"]
+  #     interval: 1m
+  #     timeout: 3s
+
+  # wallabag_db:
+  #   image: mariadb
+  #   container_name: wallabag_db
+  #   hostname: wallabag-db
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=${WALLABAG_DATABASE_ROOT_PASSWORD}
+  #   networks:
+  #     - media
+  #   volumes:
+  #     - ${CONFIG_BASE_DIR}/wallabag/database:/var/lib/mysql
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+  #     interval: 20s
+  #     timeout: 3s
+
+  # wallabag_redis:
+  #   image: redis:alpine
+  #   container_name: wallabag_redis
+  #   hostname: wallabag-redis
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 20s
+  #     timeout: 3s
+
+networks:
+  media:
+    name: media
+    external: true
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
+      com.docker.network.bridge.enable_ip_masquerade: "true"
+      com.docker.network.bridge.host_binding_ipv4: "0.0.0.0"
+      com.docker.network.bridge.name: "media"
+      com.docker.network.driver.mtu: "1500"
+    ipam:
+      config:
+        - subnet: ${SUBNET}
+          gateway: ${GATEWAY_IP}
+          ip_range: ${IP_RANGE}
