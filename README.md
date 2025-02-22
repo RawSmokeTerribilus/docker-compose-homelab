@@ -91,6 +91,9 @@ contact me if you would like more information.
   updates to docker images and pulling them down.
 
 ### `docker-compose-tools.yaml`
+- [Homarr](https://homarr.dev/): A sleek, modern dashboard.
+- [Tdarr](https://home.tdarr.io/): Tdarr is a conditional based transcoding
+  application for automating media library transcode/remux management.
 - [Paperless-NGX](https://github.com/paperless-ngx/paperless-ngx): A tool for 
   organizing documents and files.
 - ~~[SearXNG](https://github.com/searxng/searxng-docker): Utility for an internet
