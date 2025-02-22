@@ -152,7 +152,6 @@ container I wanted to up to it.
   and Audiobooks.
 - [Sonarr](https://github.com/linuxserver/docker-sonarr): Sonarr for TV series
   and shows.
-- TODO ---  ADD HOMARR
 
 ### `docker-compose-photos.yaml`
 
