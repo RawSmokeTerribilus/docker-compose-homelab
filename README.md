@@ -68,10 +68,10 @@ in setting up. You will likely find it completely unnessesary but feel free to
 contact me if you would like more information.
 
 - ~~[rana](https://github.com/grunch/rana): A tool for finding _vanity_ public
-  keys used with `nostr`.
+  keys used with `nostr`.~~
 - ~~[vanity-age](https://github.com/johnwyles/vanity-age): A rewrite in a fork I
   did of [vanity-age](https://github.com/sobaq/vanity-age) for finding _vanity_
-  public `age` keys.
+  public `age` keys.~~
 
 ### `docker-compose-ops.yaml`
 - [cAdvisor](https://github.com/google/cadvisor): A tool for monitoring Docker
@@ -94,14 +94,14 @@ contact me if you would like more information.
 - [Paperless-NGX](https://github.com/paperless-ngx/paperless-ngx): A tool for 
   organizing documents and files.
 - ~~[SearXNG](https://github.com/searxng/searxng-docker): Utility for an internet
-  metasearch engine that aggregates search results.
+  metasearch engine that aggregates search results.~~
 - [Syncthing](https://github.com/linuxserver/docker-syncthing): Utility for
   syncing files across machines.
 - ~~[Tailscale](https://hub.docker.com/r/tailscale/tailscale): Private VPN to
   chain together your home network and other networks and machines for sharing
-  services and files.
+  services and files.~~
 - ~~[Wallabag](https://github.com/wallabag/wallabag): 
-  wallabag is a web application allowing you to save web pages for later reading.
+  wallabag is a web application allowing you to save web pages for later reading.~~
 
 ### `docker-compose-downloaders.yaml`
 
@@ -112,16 +112,16 @@ better utility to operate as a VPN killswitch universally I could plug any
 container I wanted to up to it.
 
 - [Deluge](https://github.com/linuxserver/docker-deluge): Deluge for torrent
-  downloads.~~
-- ~~[Exportarr](https://github.com/onedr0p/exportarr): Exportarr for metrics (SABnzbd).
+  downloads.
+- ~~[Exportarr](https://github.com/onedr0p/exportarr): Exportarr for metrics (SABnzbd).~~
 - ~~[Gluetun](https://github.com/qdm12/gluetun): Utility for a base VPN killswitch
-  container that the downloading containers filter through when downloading.
+  container that the downloading containers filter through when downloading.~~
 - ~~[NZBGet](https://github.com/linuxserver/docker-nzbget): NZBGet for Usenet
   downloads.~~
 - [qBitorrent](https://docs.linuxserver.io/images/docker-qbittorrent/): A
   sophisticated and battle tested bittorrent client.
 - ~~[SABnzbd](https://github.com/linuxserver/docker-sabnzbd) SABnzbd for Usenet
-  downloads.
+  downloads.~~
 - ~~[SABnnzdVPN](https://github.com/binhex/arch-sabnzbdvpn) SABnzbd with OpenVPN
   for torrent downloads which includes a VPN killswitch to stop downloading on
   loss of a VPN connection.~~
@@ -168,7 +168,7 @@ container I wanted to up to it.
 - [Jellyseerr](https://hub.docker.com/r/fallenbagel/jellyseerr): Jellyseerr
   (Overseerr fork) for browsing and discovering of new media.~~
 - ~~[Plex](https://github.com/linuxserver/docker-plex): Plex media center for
-  viewing and playing all of your media.
+  viewing and playing all of your media.~~
 - ~~[Tautulli](https://github.com/linuxserver/docker-tautulli): Tautulli for Plex
   statistics and monitoring.~~
 - ~~[Overseerr](https://github.com/linuxserver/docker-overseerr): Overseer for
@@ -179,8 +179,8 @@ container I wanted to up to it.
 - ~~[Kometa](https://github.com/Kometa-Team/Kometa): A fairly complex piece of
   software to render badges, evaluate audience/user/critic ratings, creat/manage
   collections, and a whole host of many other things. The best way to get
-  started is probably seeing some explanations and visuals on the on the 
-  ~~[Kometa wiki page](https://metamanager.wiki/en/latest/).
+  started is probably seeing some explanations and visuals on the on the wiki.~~
+  ~~[Kometa wiki page](https://metamanager.wiki/en/latest/).~~
 
 ### `docker-compose-homeassistant.yaml`
 
