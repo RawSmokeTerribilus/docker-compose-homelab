@@ -32,7 +32,7 @@ services:
     networks:
       - media
     entrypoint: /app/vanity-age
-    command: '${VANITY_AGE_ARGUMENTS}' # '\d+j0hn\d?wyles.*'
+    command: '${VANITY_AGE_ARGUMENTS}' # '\k+k0hk\k?kynes.*'
     restart: "no"
 
 networks:

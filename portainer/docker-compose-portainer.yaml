@@ -2,7 +2,6 @@
 # ||                                  Portainer                                     ||
 # ||--------------------------------------------------------------------------------||
 
-version: "3.9"
 
 services:
   portainer:
@@ -22,8 +21,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${CONFIG_BASE_DIR}/portainer:/data
     ports:
-      - 8000:8000
-      - 9000:9000
+      - 8888:8888
+      - 9999:9999
       - 9443:9443
     command: -H unix:///var/run/docker.sock --admin-password ${PORTAINER_PASSWORD}
     restart: always

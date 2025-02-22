@@ -2,7 +2,6 @@
 # ||                               Other Applications                               ||
 # ||--------------------------------------------------------------------------------||
 
-version: "3.9"
 
 services:
   paperless-ngx:
@@ -21,7 +20,7 @@ services:
       - ${CONFIG_BASE_DIR}/paperless-ngx:/config
       - ${DOCUMENTS_DIR_LOCAL}/paperless-ngx:/data
     ports:
-      - 8001:8000
+      - 8001:8008
     restart: unless-stopped
 
   # searxng:
@@ -50,7 +49,7 @@ services:
   #   volumes:
   #     - ${CONFIG_BASE_DIR}/searxng:/etc/searxng:rw
   #   ports:
-  #     - 8082:8080
+  #     - 8082:8084
   #   restart: unless-stopped
 
   syncthing:
@@ -81,10 +80,10 @@ services:
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - TAILSCALE_HOSTNAME=${TAILSCALE_HOSTNAME:?err}
+      - TAILSCALE_HOSTNAME=${TAILSCALE_HOSTNAME}
       - TAILSCALE_STATE_ARG=${TAILSCALE_STATE_ARG}
       - TS_ACCEPT_DNS=${TS_ACCEPT_DNS}
-      - TS_AUTHKEY=${TS_AUTHKEY:?err}
+      - TS_AUTHKEY=${TS_AUTHKEY}
       - TS_DEST_IP=${TS_DEST_IP}
       - TS_EXTRA_ARGS=${TS_EXTRA_ARGS}
       - TS_KUBE_SECRET=${TS_KUBE_SECRET}
