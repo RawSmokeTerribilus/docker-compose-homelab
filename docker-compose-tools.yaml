@@ -68,40 +68,40 @@ services:
       - ${SYNCTHING_MOUNT_DIR_2_LOCAL}:${SYNCTHING_MOUNT_DIR_2_RELATIVE}
     restart: unless-stopped
 
-  tailscale:
-    image: tailscale/tailscale:latest
-    container_name: tailscale
-    hostname: ${TAILSCALE_HOSTNAME}
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
-      - SYS_MODULE
-    privileged: true
-    environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TAILSCALE_HOSTNAME=${TAILSCALE_HOSTNAME}
-      - TAILSCALE_STATE_ARG=${TAILSCALE_STATE_ARG}
-      - TS_ACCEPT_DNS=${TS_ACCEPT_DNS}
-      - TS_AUTHKEY=${TS_AUTHKEY}
-      - TS_DEST_IP=${TS_DEST_IP}
-      - TS_EXTRA_ARGS=${TS_EXTRA_ARGS}
-      - TS_KUBE_SECRET=${TS_KUBE_SECRET}
-      - TS_OUTBOUND_HTTP_PROXY_LISTEN=${TS_OUTBOUND_HTTP_PROXY_LISTEN}
-      - TS_ROUTES=${TS_ROUTES}
-      - TS_SOCKET=${TS_SOCKET}
-      - TS_SOCKS5_SERVER=${TS_SOCKS5_SERVER}
-      - TS_STATE_DIR=${TS_STATE_DIR}
-      - TS_TAILSCALED_EXTRA_ARGS=${TS_TAILSCALED_EXTRA_ARGS}
-      - TS_USERSPACE=${TS_USERSPACE}
-      - TZ=${TZ}
-      - UMASK=${UMASK}
-    network_mode: host
-    volumes:
-      - ${CONFIG_BASE_DIR}/tailscale/varlib:/var/lib
-      - /dev/net/tun:/dev/net/tun
-      - ${CONFIG_BASE_DIR}/tailscale/tmp:/tmp
-    restart: unless-stopped
+#  tailscale:
+#    image: tailscale/tailscale:latest
+#    container_name: tailscale
+#    hostname: ${TAILSCALE_HOSTNAME}
+#    cap_add:
+#      - NET_ADMIN
+#      - NET_RAW
+#      - SYS_MODULE
+#    privileged: true
+#    environment:
+#      - PGID=${PGID}
+#      - PUID=${PUID}
+#      - TAILSCALE_HOSTNAME=${TAILSCALE_HOSTNAME}
+#      - TAILSCALE_STATE_ARG=${TAILSCALE_STATE_ARG}
+#      - TS_ACCEPT_DNS=${TS_ACCEPT_DNS}
+#      - TS_AUTHKEY=${TS_AUTHKEY}
+#      - TS_DEST_IP=${TS_DEST_IP}
+#      - TS_EXTRA_ARGS=${TS_EXTRA_ARGS}
+#      - TS_KUBE_SECRET=${TS_KUBE_SECRET}
+#      - TS_OUTBOUND_HTTP_PROXY_LISTEN=${TS_OUTBOUND_HTTP_PROXY_LISTEN}
+#      - TS_ROUTES=${TS_ROUTES}
+#      - TS_SOCKET=${TS_SOCKET}
+#      - TS_SOCKS5_SERVER=${TS_SOCKS5_SERVER}
+#      - TS_STATE_DIR=${TS_STATE_DIR}
+#      - TS_TAILSCALED_EXTRA_ARGS=${TS_TAILSCALED_EXTRA_ARGS}
+#      - TS_USERSPACE=${TS_USERSPACE}
+#      - TZ=${TZ}
+#      - UMASK=${UMASK}
+#    network_mode: host
+#    volumes:
+#      - ${CONFIG_BASE_DIR}/tailscale/varlib:/var/lib
+#      - /dev/net/tun:/dev/net/tun
+#      - ${CONFIG_BASE_DIR}/tailscale/tmp:/tmp
+#    restart: unless-stopped
 
   # wallabag:
   #   image: wallabag/wallabag

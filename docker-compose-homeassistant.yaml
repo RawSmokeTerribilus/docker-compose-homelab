@@ -2,7 +2,6 @@
 # ||                                  Home Assistant                                ||
 # ||--------------------------------------------------------------------------------||
 
-version: "3.9"
 
 services:
   homeassistant:
@@ -21,7 +20,7 @@ services:
       - /dev/ttyUSB1:/dev/ttyUSB1
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      # TODO: THIS IS BRAKING BLUETOOTH SUPPORT (RPI4 - DO WE EVEN NEED IT?)
+      # TODO: THIS IS BREAKING BLUETOOTH SUPPORT (RPI4/remote-server - DO WE EVEN NEED IT?)
       # - /run/dbus:/run/dbus:ro
       - ${HOMEASSISTANT_DATA_DIR_1_LOCAL}:${HOMEASSISTANT_DATA_DIR_1_RELATIVE}
       - ${HOMEASSISTANT_DATA_DIR_2_LOCAL}:${HOMEASSISTANT_DATA_DIR_2_RELATIVE}

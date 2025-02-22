@@ -2,14 +2,13 @@
 # ||                                Operational Tools                               ||
 # ||--------------------------------------------------------------------------------||
 
-version: "3.9"
 
 services:
   alertmanager:
     container_name: alertmanager
     hostname: alertmanager
     image: prom/alertmanager:v0.27.0
-    user: 1024:100
+    user: 1000:1000
     volumes:
       - ${CONFIG_BASE_DIR}/prometheus/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
       - ${CONFIG_BASE_DIR}/prometheus/config/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
@@ -23,7 +22,7 @@ services:
     hostname: cadvisor
     networks:
       - media
-    user: 1024:100
+    user: 1000:1000
     mem_limit: 256m
     mem_reservation: 64m
     cpu_shares: 512
@@ -45,7 +44,7 @@ services:
     hostname: grafana
     depends_on:
       - grafana_postgres
-    user: 1024:100
+    user: 1000:1000
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
@@ -77,7 +76,7 @@ services:
     image: postgres:16-alpine
     container_name: grafana_postgres
     hostname: grafana-postgres
-    user: 1024:100
+    user: 1000:1000
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
@@ -101,7 +100,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
       - UMASK=${UMASK}
-    user: 1024:100
+    user: 1000:1000
     networks:
       - media
     ports:
@@ -126,7 +125,7 @@ services:
     security_opt:
       - no-new-privileges=true
     # read_only: true
-    user: 1024:100
+    user: 1000:1000
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:9100/
     command:
@@ -185,7 +184,7 @@ services:
     cpu_shares: 768
     security_opt:
       - no-new-privileges=true
-    user: 1024:100
+    user: 1000:1000
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:9090/ || exit 1
     volumes:
@@ -207,7 +206,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
       - UMASK=${UMASK}
-    user: 1024:100
+    user: 1000:1000
     ports:
     - 6379:6379
 
@@ -228,7 +227,7 @@ services:
     security_opt:
       - no-new-privileges:true
     # read_only: true
-    user: 1024:100
+    user: 1000:1000
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:9116/ || exit 1
     volumes:
@@ -251,7 +250,7 @@ services:
     security_opt:
       - no-new-privileges=true
     # read_only: true
-    user: 1024:100
+    user: 1000:1000
     restart: unless-stopped
 
   watchtower:
