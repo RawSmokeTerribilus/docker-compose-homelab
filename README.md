@@ -234,19 +234,19 @@ values Docker compose needs then everything should proceed smoothly:
       with a stack named after the parent directory to the image it is launch is
       called. This way in our case it will be `portainer` now:
       - `cd portainer/`
-      - `docker compose --file docker-compose-portainer.yaml --env-file ../.env up --detach`
+      - `docker compose --file docker-compose-portainer.yaml --env-file ../environment_variables.env up --detach`
     - And now for the rest:
       - `cd ../`
-      - `docker compose --file docker-compose-ops.yaml --env-file .env up --detach`
-      - `docker compose --file docker-compose-tools.yaml --env-file .env up --detach`
-      - `docker compose --file docker-compose-downloaders.yaml --env-file .env up --detach`
-      - `docker compose --file docker-compose-media-players.yaml --env-file .env up --detach`
-      - `docker compose --file docker-compose-photos.yaml --env-file .env up --detach`
-      - `docker compose --file docker-compose-servarr.yaml --env-file .env up --detach`
+      - `docker compose --file docker-compose-ops.yaml --env-file environment_variables.env up --detach`
+      - `docker compose --file docker-compose-tools.yaml --env-file environment_variables.env up --detach`
+      - `docker compose --file docker-compose-downloaders.yaml --env-file environment_variables.env up --detach`
+      - `docker compose --file docker-compose-media-players.yaml --env-file environment_variables.env up --detach`
+      - `docker compose --file docker-compose-photos.yaml --env-file environment_variables.env up --detach`
+      - `docker compose --file docker-compose-servarr.yaml --env-file environment_variables.env up --detach`
     - Also if you'd like to setup Kometa you'll want to add a cron entry you
       run periodically (around every 24-96 hours) with the following command or
       the alternative listed afterwards:
-      - `docker-compose --file docker-compose-kometa.yaml --env-file .env up kometa --detach`
+      - `docker-compose --file docker-compose-kometa.yaml --env-file environment_variables.env up kometa --detach`
       - Open `jobs.ini` in `ofelia` and add the following:
         - ```ini
           [job-exec "kometa daily"]
@@ -257,7 +257,7 @@ values Docker compose needs then everything should proceed smoothly:
           ```
     - If you'd also like to setup Home Assistant you'll want to run that with
       the following command:
-       - `docker-compose --file docker-compose-homeassistant.yaml --env-file .env up --detach`
+       - `docker-compose --file docker-compose-homeassistant.yaml --env-file environment_variables.env up --detach`
 
 
 ## Directory Structure

@@ -23,7 +23,6 @@ services:
       - SECRET_ENCRYPTION_KEY=${HOMARRENCRYPTKEY}
     networks:
       - media
-    restart: unless-stopped
 
   tdarr:
     container_name: tdarr

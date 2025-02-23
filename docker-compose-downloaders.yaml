@@ -45,7 +45,7 @@ services:
         - TZ=${TZ}
         - DELUGE_LOGLEVEL=info
         - UMASK=${UMASK}
-      networs:
+      networks:
         - media
       ports:
         - 8112:8112
@@ -380,7 +380,7 @@ services:
 
   unpackerr:
       image: golift/unpackerr
-       container_name:unpackerr
+      container_name: unpackerr
       user: 1000:1000
       environment:
       - PGID=${PGID}
