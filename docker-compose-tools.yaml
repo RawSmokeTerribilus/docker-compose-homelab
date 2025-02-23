@@ -20,6 +20,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
       - UMASK=${UMASK}
+      - SECRET_ENCRYPTION_KEY=${HOMARRENCRYPTKEY}
     networks:
       - media
     restart: unless-stopped
