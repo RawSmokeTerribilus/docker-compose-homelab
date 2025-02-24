@@ -22,8 +22,7 @@ NAS or media center
   - [Directory Structure](#directory-structure)
   - [Environment Variables](#environment-variables)
   - [TODO](#todo)
-    - [TODO: Add Gluetun Instructions](#todo-add-gluetun-instructions)
-
+    
 
 ## Useful Resources To Have On-hand
 
@@ -310,8 +309,8 @@ mkdir -p ${CONFIG_BASE_DIR}/photoprism/database
 mkdir -p ${CONFIG_BASE_DIR}/photoprism/storage
 mkdir -p ${CONFIG_BASE_DIR}/plex
 mkdir -p ${CONFIG_BASE_DIR}/portainer
-mkdir -p ${CONFIG_BASE_DIR}/promethues/config
-mkdir -p ${CONFIG_BASE_DIR}/promethues/data
+mkdir -p ${CONFIG_BASE_DIR}/prometheus/config
+mkdir -p ${CONFIG_BASE_DIR}/prometheus/data
 mkdir -p ${CONFIG_BASE_DIR}/prowlarr
 mkdir -p ${CONFIG_BASE_DIR}/qbittorrent
 mkdir -p ${CONFIG_BASE_DIR}/radarr
@@ -330,8 +329,8 @@ mkdir -p ${CONFIG_BASE_DIR}/transmission
 Copy the resources for **Ofelia** and **Prometheus** to their respective
 directories:
 ```shell
-cp resources/ofelia/jobs.ini ${CONFIG_BASE_DIR}/ofelia/
-cp resources/prometheus/prometheus.yaml ${CONFIG_BASE_DIR}/prometheus/config/
+cp 'project-folder'/resources/ofelia/jobs.ini ${CONFIG_BASE_DIR}/ofelia/jobs.ini
+cp 'project folder'/resources/prometheus/config/prometheus.yaml ${CONFIG_BASE_DIR}/prometheus/config/prometheus.yaml
 ```
 
 For **Grafana** you will want to import the dashboard from
@@ -586,8 +585,14 @@ _relative_ to the container (i.e. **not** the actual location of the files on
 - **P3:** Figure out searxng
 - **P3:** Add documentation or maybe breakout Home Assistant
 
-### TODO: Add NEXTCLOUD !!!!
-### TODO: Add getdashdot.com !!!!
+### TODO: [Add NEXTCLOUD]
+### TODO: [Add getdashdot.com]
+### TODO: [Add Gluetun instructions](#todo-add-gluetun-instructions)
+### TODO: [Fix Mylar3 error 500]
+### TODO: [Fix Paperless error 500]
+### TODO: [Fix Homeassistant errors]
+### TODO: [Fix Qbit image not login in firefox] (it does login in any other browser)
+
 
 ```shell
 pushd ${CONFIG_BASE_DIR}/transmission-openvpn/
