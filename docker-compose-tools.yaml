@@ -82,25 +82,25 @@ services:
       - /dev/fb0:/dev/fb0
       - /dev/dri:/dev/dri
 
-  paperless-ngx:
-    image: lscr.io/linuxserver/paperless-ngx:latest
-    container_name: paperless-ngx
-    hostname: paperless-ngx
-    environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-      - UMASK=${UMASK}
-      - REDIS_URL=
-    networks:
-      - media
-    volumes:
-      - ${CONFIG_BASE_DIR}/paperless-ngx:/config
-      - ${DOCUMENTS_DIR_LOCAL}/paperless-ngx:/data
-      - ${DOCUMENTS_DIR_LOCAL}:/documents
-    ports:
-      - 8001:8008
-    restart: unless-stopped
+#  paperless-ngx:
+#    image: lscr.io/linuxserver/paperless-ngx:latest
+#    container_name: paperless-ngx
+#    hostname: paperless-ngx
+#    environment:
+#      - PGID=${PGID}
+#      - PUID=${PUID}
+#      - TZ=${TZ}
+#      - UMASK=${UMASK}
+#      - REDIS_URL=
+#    networks:
+#      - media
+#    volumes:
+#      - ${CONFIG_BASE_DIR}/paperless-ngx:/config
+#      - ${DOCUMENTS_DIR_LOCAL}/paperless-ngx:/data
+#      - ${DOCUMENTS_DIR_LOCAL}:/documents
+#    ports:
+#      - 8001:8008
+#    restart: unless-stopped
 
   # searxng:
   #   image: searxng/searxng:latest

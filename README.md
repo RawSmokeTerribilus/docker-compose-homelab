@@ -93,8 +93,8 @@ contact me if you would like more information.
 - [Homarr](https://homarr.dev/): A sleek, modern dashboard.
 - [Tdarr](https://home.tdarr.io/): Tdarr is a conditional based transcoding
   application for automating media library transcode/remux management.
-- [Paperless-NGX](https://github.com/paperless-ngx/paperless-ngx): A tool for 
-  organizing documents and files.
+- ~~[Paperless-NGX](https://github.com/paperless-ngx/paperless-ngx): A tool for 
+  organizing documents and files.~~
 - ~~[SearXNG](https://github.com/searxng/searxng-docker): Utility for an internet
   metasearch engine that aggregates search results.~~
 - [Syncthing](https://github.com/linuxserver/docker-syncthing): Utility for
@@ -140,7 +140,7 @@ container I wanted to up to it.
 - [Bazarr](https://github.com/linuxserver/docker-bazarr): Bazarr for adding
   Subtitles to media found in Radarr and Sonarr.
 - [Exportarr](https://github.com/onedr0p/exportarr): Exportarr for metrics.
-- [Mylar3](https://github.com/mylar3/mylar3): Mylar3 for Comic Books.
+- ~~[Mylar3](https://github.com/mylar3/mylar3): Mylar3 for Comic Books.~~
 - [Lidarr](https://github.com/linuxserver/docker-lidarr): Lidarr for Music.
 - [Notifiarr](https://hub.docker.com/r/golift/notifiarr): Notifiarr for Discord
   and Webhooks.
@@ -289,25 +289,25 @@ mkdir -p ${CONFIG_BASE_DIR}/bazarr
 # mkdir -p ${CONFIG_BASE_DIR}/caddy
 mkdir -p ${CONFIG_BASE_DIR}/deluge
 # mkdir -p ${CONFIG_BASE_DIR}/delugevpn
-mkdir -p ${CONFIG_BASE_DIR}/gluetun
+#mkdir -p ${CONFIG_BASE_DIR}/gluetun
 mkdir -p ${CONFIG_BASE_DIR}/grafana/database
 mkdir -p ${CONFIG_BASE_DIR}/grafana/snmp
 mkdir -p ${CONFIG_BASE_DIR}/grafana/storage
-mkdir -p ${CONFIG_BASE_DIR}/immich/cache
-mkdir -p ${CONFIG_BASE_DIR}/immich/database
+#mkdir -p ${CONFIG_BASE_DIR}/immich/cache
+#mkdir -p ${CONFIG_BASE_DIR}/immich/database
 mkdir -p ${CONFIG_BASE_DIR}/jellyfin
 mkdir -p ${CONFIG_BASE_DIR}/jellyseerr
-mkdir -p ${CONFIG_BASE_DIR}/kometa
+#mkdir -p ${CONFIG_BASE_DIR}/kometa
 mkdir -p ${CONFIG_BASE_DIR}/lidarr
-mkdir -p ${CONFIG_BASE_DIR}/mylar3
+#mkdir -p ${CONFIG_BASE_DIR}/mylar3
 mkdir -p ${CONFIG_BASE_DIR}/notifiarr
 # mkdir -p ${CONFIG_BASE_DIR}/nzbget
 mkdir -p ${CONFIG_BASE_DIR}/ofelia
 mkdir -p ${CONFIG_BASE_DIR}/overseerr
-mkdir -p ${CONFIG_BASE_DIR}/paperless-ngx
+#mkdir -p ${CONFIG_BASE_DIR}/paperless-ngx
 mkdir -p ${CONFIG_BASE_DIR}/photoprism/database
 mkdir -p ${CONFIG_BASE_DIR}/photoprism/storage
-mkdir -p ${CONFIG_BASE_DIR}/plex
+#mkdir -p ${CONFIG_BASE_DIR}/plex
 mkdir -p ${CONFIG_BASE_DIR}/portainer
 mkdir -p ${CONFIG_BASE_DIR}/prometheus/config
 mkdir -p ${CONFIG_BASE_DIR}/prometheus/data
@@ -315,14 +315,14 @@ mkdir -p ${CONFIG_BASE_DIR}/prowlarr
 mkdir -p ${CONFIG_BASE_DIR}/qbittorrent
 mkdir -p ${CONFIG_BASE_DIR}/radarr
 mkdir -p ${CONFIG_BASE_DIR}/readarr
-mkdir -p ${CONFIG_BASE_DIR}/sabnzbd
+#mkdir -p ${CONFIG_BASE_DIR}/sabnzbd
 # mkdir -p ${CONFIG_BASE_DIR}/sabnzbdvpn
 mkdir -p ${CONFIG_BASE_DIR}/searxng
 mkdir -p ${CONFIG_BASE_DIR}/sonarr
 mkdir -p ${CONFIG_BASE_DIR}/syncthing
-mkdir -p ${CONFIG_BASE_DIR}/tailscale
-mkdir -p ${CONFIG_BASE_DIR}/tautulli
-mkdir -p ${CONFIG_BASE_DIR}/transmission
+#mkdir -p ${CONFIG_BASE_DIR}/tailscale
+#mkdir -p ${CONFIG_BASE_DIR}/tautulli
+#mkdir -p ${CONFIG_BASE_DIR}/transmission
 # mkdir -p ${CONFIG_BASE_DIR}/transmission-openvpn
 ```
 
@@ -573,7 +573,7 @@ _relative_ to the container (i.e. **not** the actual location of the files on
 
   Now personal notes to myself on some of that which remains:
 
-- **P0**: Fix grafana and prometheus
+- **P0**: Fix prometheus
 - **P1:** Consider adding [Lemmy](https://blog.colic.io/2023/07/07/self-hosting-lemmy-a-step-by-step-guide-with-docker-compose/)
 - **P1:** Add instructions for wiring everything together (with pictures?)
 - **P1:** Add instructions for Gluetun containers to replace those found below
@@ -589,10 +589,10 @@ _relative_ to the container (i.e. **not** the actual location of the files on
 ### TODO: [Add getdashdot.com]
 ### TODO: [Add Gluetun instructions]
 ### TODO: [Fix Mylar3 error 500]
-### TODO: [Fix Paperless error 500]
 ### TODO: [Fix Homeassistant errors]
-### TODO: [Fix Qbit image not login in firefox] (it does login in any other browser)
+### TODO: [Inform Qbit image not login in firefox] (it does login in any other browser)
 ### TODO: [Fix docker-compose-photos.yaml] (it has been replaced by a docker-compose-photoprism.yml that works)
+### TODO: [Remove Paperles-ngx and create image with https://github.com/paperless-ngx/paperless-ngx]
 
 
 ```shell
