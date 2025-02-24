@@ -152,11 +152,11 @@ container I wanted to up to it.
 - [Sonarr](https://github.com/linuxserver/docker-sonarr): Sonarr for TV series
   and shows.
 
-### `docker-compose-photos.yaml`
+### `docker-compose-photoprism.yml` 
 
-- [Immich](https://github.com/immich-app/immich): The new photo management
+- ~~[Immich](https://github.com/immich-app/immich): The new photo management
   utility on the block for managing photos, videos, and other assorted media
-  with object, color, face, and other recognition and tagging. Fairly unstable
+  with object, color, face, and other recognition and tagging. Fairly unstable~~
 - [Photo Prism](https://github.com/photoprism/photoprism): A  battle tested and
   more stable photo, video, and assorted media organization utility for manging
   media
@@ -592,6 +592,7 @@ _relative_ to the container (i.e. **not** the actual location of the files on
 ### TODO: [Fix Paperless error 500]
 ### TODO: [Fix Homeassistant errors]
 ### TODO: [Fix Qbit image not login in firefox] (it does login in any other browser)
+### TODO: [Fix docker-compose-photos.yaml] (it has been replaced by a docker-compose-photoprism.yml that works)
 
 
 ```shell

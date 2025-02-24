@@ -1,0 +1,101 @@
+
+services:
+  photoprism:
+    image: photoprism/photoprism:latest
+    container_name: photoprism
+    hostname: photoprism
+    stop_grace_period: 10s
+    depends_on:
+      - photoprism_mariadb
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    environment:
+      PHOTOPRISM_ADMIN_PASSWORD: "testpassword"
+      PHOTOPRISM_ADMIN_USER: "admin"
+      PHOTOPRISM_AUTH_MODE: "password"
+      PHOTOPRISM_AUTH_INTERVAL: 10
+      PHOTOPRISM_LOGIN_LIMIT: 100
+      PHOTOPRISM_LOGIN_INTERVAL: 60
+      PHOTOPRISM_DATABASE_DRIVER: "mysql"
+      PHOTOPRISM_DATABASE_NAME: "photoprism-db"
+      PHOTOPRISM_DATABASE_PASSWORD: "testpassword"
+      PHOTOPRISM_DATABASE_SERVER: "photoprism-mariadb:3306"
+      PHOTOPRISM_DATABASE_USER: "admin"
+      PHOTOPRISM_DISABLE_TLS: false
+      PHOTOPRISM_DETECT_NSFW: false
+      PHOTOPRISM_DISABLE_CHOWN: false
+      PHOTOPRISM_DISABLE_CLASSIFICATION: false
+      PHOTOPRISM_DISABLE_FACES: false
+      PHOTOPRISM_DISABLE_RAW: false
+      PHOTOPRISM_DISABLE_SETTINGS: false
+      PHOTOPRISM_DISABLE_TENSORFLOW: false
+      PHOTOPRISM_DISABLE_VECTORS: false
+      PHOTOPRISM_DISABLE_WEBDAV: false
+      PHOTOPRISM_EXPERIMENTAL: false
+      PHOTOPRISM_FFMPEG_BITRATE: 64
+      PHOTOPRISM_FFMPEG_ENCODER: "software"
+      PHOTOPRISM_FFMPEG_SIZE: 3840
+      PHOTOPRISM_HTTP_COMPRESSION: "gzip"
+      PHOTOPRISM_INIT: "https tensorflow"
+      PHOTOPRISM_JPEG_QUALITY: 95
+      PHOTOPRISM_LOG_LEVEL: "info"
+      PHOTOPRISM_ORIGINALS_LIMIT: 500000
+      PHOTOPRISM_RAW_PRESETS: false
+      PHOTOPRISM_READONLY: false
+      PHOTOPRISM_SITE_AUTHOR: "Optimus Prime"
+      PHOTOPRISM_SITE_CAPTION: "Megatron must be stopped. No matter the cost."
+      PHOTOPRISM_SITE_DESCRIPTION: "There is a thin line between being a hero and being a memory."
+      PHOTOPRISM_SITE_TITLE: "PhotoPrism"
+      PHOTOPRISM_SITE_URL: "http://localhost:2342/"
+      PHOTOPRISM_UPLOAD_NSFW: true
+      PUID: 1000
+      PGID: 1000
+      UMASK: 002
+    networks:
+      - media
+    working_dir: /photoprism
+    volumes:
+      - /home/server/Photos:/photoprism/originals
+      - /home/server/docker/photoprism/storage:/photoprism/storage
+    ports:
+      - 2342:2342
+    restart: unless-stopped
+
+  photoprism_mariadb:
+    image: mariadb:11
+    container_name: photoprism_mariadb
+    hostname: photoprism-mariadb
+    stop_grace_period: 5s
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    environment:
+      MARIADB_AUTO_UPGRADE: 1
+      MARIADB_INITDB_SKIP_TZINFO: 1
+      MARIADB_DATABASE: photoprism-db
+      MARIADB_USER: admin
+      MARIADB_PASSWORD: testpassword
+      MARIADB_ROOT_PASSWORD: admintestpass
+    networks:
+      - media
+    volumes:
+      - /home/server/docker/photoprism/database:/var/lib/mysql
+    command: --innodb-buffer-pool-size=512M --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollba>
+    restart: unless-stopped
+
+networks:
+  media:
+    name: media
+    external: true
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
+      com.docker.network.bridge.enable_ip_masquerade: "true"
+      com.docker.network.bridge.host_binding_ipv4: "0.0.0.0"
+      com.docker.network.bridge.name: "media"
+    ipam:
+      config:
+        - subnet: 172.16.0.0/16
+          gateway: 172.16.0.1
+          ip_range: 172.16.0.0/24

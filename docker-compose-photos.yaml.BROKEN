@@ -12,14 +12,14 @@ services:
       - immich_redis
       - immich_database
     environment:
-      - UPLOAD_LOCATION=${PHOTOS_DIR_LOCAL}
-      - DB_DATA_LOCATION=${CONFIG_BASE_DIR}/immich
-      - IMMICH_VERSION=${IMMICH_VERSION}
-      - DB_PASSWORD=${IMMICH_DB_PASSWORD}
-      - DB_USERNAME=${IMMICH_DB_USERNAME}
-      - DB_DATABASE_NAME=${IMMICH_DB_DATABASE_NAME}
-      - REDIS_HOSTNAME=immich-redis
-      - DB_HOSTNAME=immich-database
+      UPLOAD_LOCATION=${PHOTOS_DIR_LOCAL}
+      DB_DATA_LOCATION=${CONFIG_BASE_DIR}/immich
+      IMMICH_VERSION=${IMMICH_VERSION}
+      DB_PASSWORD=${IMMICH_DB_PASSWORD}
+      DB_USERNAME=${IMMICH_DB_USERNAME}
+      DB_DATABASE_NAME=${IMMICH_DB_DATABASE_NAME}
+      REDIS_HOSTNAME=immich-redis
+      DB_HOSTNAME=immich-database
     networks:
       - media
     volumes:
@@ -38,14 +38,14 @@ services:
       - immich_redis
       - immich_database
     environment:
-      - UPLOAD_LOCATION=${PHOTOS_DIR_LOCAL}
-      - DB_DATA_LOCATION=${CONFIG_BASE_DIR}/immich
-      - IMMICH_VERSION=${IMMICH_VERSION}
-      - DB_PASSWORD=${IMMICH_DB_PASSWORD}
-      - DB_USERNAME=${IMMICH_DB_USERNAME}
-      - DB_DATABASE_NAME=${IMMICH_DB_DATABASE_NAME}
-      - REDIS_HOSTNAME=immich-redis
-      - DB_HOSTNAME=immich-database
+      UPLOAD_LOCATION=${PHOTOS_DIR_LOCAL}
+      DB_DATA_LOCATION=${CONFIG_BASE_DIR}/immich
+      IMMICH_VERSION=${IMMICH_VERSION}
+      DB_PASSWORD=${IMMICH_DB_PASSWORD}
+      DB_USERNAME=${IMMICH_DB_USERNAME}
+      DB_DATABASE_NAME=${IMMICH_DB_DATABASE_NAME}
+      REDIS_HOSTNAME=immich-redis
+      DB_HOSTNAME=immich-database
     networks:
       - media
     volumes:
@@ -59,14 +59,14 @@ services:
     container_name: immich_machine_learning
     hostname: immich-machine-learning
     environment:
-      - UPLOAD_LOCATION=${PHOTOS_DIR_LOCAL}
-      - DB_DATA_LOCATION=${CONFIG_BASE_DIR}/immich
-      - IMMICH_VERSION=${IMMICH_VERSION}
-      - DB_PASSWORD=${IMMICH_DB_PASSWORD}
-      - DB_USERNAME=${IMMICH_DB_USERNAME}
-      - DB_DATABASE_NAME=${IMMICH_DB_DATABASE_NAME}
-      - REDIS_HOSTNAME=immich-redis
-      - DB_HOSTNAME=immich-database
+      UPLOAD_LOCATION=${PHOTOS_DIR_LOCAL}
+      DB_DATA_LOCATION=${CONFIG_BASE_DIR}/immich
+      IMMICH_VERSION=${IMMICH_VERSION}
+      DB_PASSWORD=${IMMICH_DB_PASSWORD}
+      DB_USERNAME=${IMMICH_DB_USERNAME}
+      DB_DATABASE_NAME=${IMMICH_DB_DATABASE_NAME}
+      REDIS_HOSTNAME=immich-redis
+      DB_HOSTNAME=immich-database
     volumes:
       - ${CONFIG_BASE_DIR}/immich/cache:/cache
     restart: unless-stopped
@@ -76,14 +76,14 @@ services:
     container_name: immich_redis
     hostname: immich-redis
     environment:
-      - UPLOAD_LOCATION=${PHOTOS_DIR_LOCAL}
-      - DB_DATA_LOCATION=${CONFIG_BASE_DIR}/immich/database
-      - IMMICH_VERSION=${IMMICH_VERSION}
-      - DB_PASSWORD=${IMMICH_DB_PASSWORD}
-      - DB_USERNAME=${IMMICH_DB_USERNAME}
-      - DB_DATABASE_NAME=${IMMICH_DB_DATABASE_NAME}
-      - REDIS_HOSTNAME=immich-redis
-      - DB_HOSTNAME=immich-database
+      UPLOAD_LOCATION=${PHOTOS_DIR_LOCAL}
+      DB_DATA_LOCATION=${CONFIG_BASE_DIR}/immich/database
+      IMMICH_VERSION=${IMMICH_VERSION}
+      DB_PASSWORD=${IMMICH_DB_PASSWORD}
+      DB_USERNAME=${IMMICH_DB_USERNAME}
+      DB_DATABASE_NAME=${IMMICH_DB_DATABASE_NAME}
+      REDIS_HOSTNAME=immich-redis
+      DB_HOSTNAME=immich-database
     networks:
       - media
     healthcheck:
@@ -95,12 +95,12 @@ services:
     hostname: immich-database
     image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
     environment:
-      - POSTGRES_DB=${IMMICH_DB_DATABASE_NAME}
-      - POSTGRES_INITDB_ARGS='--data-checksums'
-      - POSTGRES_PASSWORD=${IMMICH_DB_PASSWORD}
-      - POSTGRES_USER=${IMMICH_DB_USERNAME}
-      - REDIS_HOSTNAME=immich-redis
-      - DB_HOSTNAME=immich-database
+      POSTGRES_DB=${IMMICH_DB_DATABASE_NAME}
+      POSTGRES_INITDB_ARGS='--data-checksums'
+      POSTGRES_PASSWORD=${IMMICH_DB_PASSWORD}
+      POSTGRES_USER=${IMMICH_DB_USERNAME}
+      REDIS_HOSTNAME=immich-redis
+      DB_HOSTNAME=immich-database
     networks:
       - media
     volumes:
@@ -124,49 +124,49 @@ services:
       - seccomp:unconfined
       - apparmor:unconfined
     environment:
-      - PGID=${PGID}
-      - PHOTOPRISM_ADMIN_PASSWORD=${PHOTOPRISM_PASSWORD}
-      - PHOTOPRISM_ADMIN_USER=${PHOTOPRISM_USERNAME}
-      - PHOTOPRISM_AUTH_MODE=password
-      - PHOTOPRISM_DATABASE_DRIVER=mysql
-      - PHOTOPRISM_DATABASE_NAME=${PHOTOPRISM_DATABASE_NAME}
-      - PHOTOPRISM_DATABASE_PASSWORD=${PHOTOPRISM_DATABASE_PASSWORD}
-      - PHOTOPRISM_DATABASE_SERVER=photoprism-mariadb:3306
-      - PHOTOPRISM_DATABASE_USER=${PHOTOPRISM_DATABASE_USER}
-      - PHOTOPRISM_DEFAULT_TLS=true
-      - PHOTOPRISM_DETECT_NSFW=false
-      - PHOTOPRISM_DISABLE_CHOWN=false
-      - PHOTOPRISM_DISABLE_CLASSIFICATION=false
-      - PHOTOPRISM_DISABLE_FACES=false
-      - PHOTOPRISM_DISABLE_RAW=false
-      - PHOTOPRISM_DISABLE_SETTINGS=false
-      - PHOTOPRISM_DISABLE_TENSORFLOW=false
-      - PHOTOPRISM_DISABLE_TLS=false
-      - PHOTOPRISM_DISABLE_VECTORS=false
-      - PHOTOPRISM_DISABLE_WEBDAV=false
-      - PHOTOPRISM_EXPERIMENTAL=false
-      - PHOTOPRISM_FFMPEG_BITRATE=64
-      - PHOTOPRISM_FFMPEG_ENCODER=software
-      - PHOTOPRISM_FFMPEG_SIZE=3840
-      - PHOTOPRISM_GID=${PGID}
-      - PHOTOPRISM_HTTP_COMPRESSION=gzip
-      - PHOTOPRISM_INIT="https gpu tensorflow"
-      - PHOTOPRISM_JPEG_QUALITY=100
-      - PHOTOPRISM_LOG_LEVEL=info
-      - PHOTOPRISM_ORIGINALS_LIMIT=1000000
-      - PHOTOPRISM_RAW_PRESETS=false
-      - PHOTOPRISM_READONLY=false
-      - PHOTOPRISM_SITE_AUTHOR="Optimus Prime"
-      - PHOTOPRISM_SITE_CAPTION="Megatron must be stopped. No matter the cost."
-      - PHOTOPRISM_SITE_DESCRIPTION="There's a thine line between being a hero and being a memory."
-      - PHOTOPRISM_SITE_TITLE="PhotoPrism"
-      - PHOTOPRISM_SITE_URL=http://localhost:2342/
-      - PHOTOPRISM_UID=${PUID}
-      - PHOTOPRISM_UMASK=${UMASK}
-      - PHOTOPRISM_UPLOAD_NSFW=true
-      - PUID=${PUID}
-      - TZ=${TZ}
-      - UMASK=${UMASK}
+      PGID=${PGID}
+      PHOTOPRISM_ADMIN_PASSWORD=${PHOTOPRISM_PASSWORD}
+      PHOTOPRISM_ADMIN_USER=${PHOTOPRISM_USERNAME}
+      PHOTOPRISM_AUTH_MODE=password
+      PHOTOPRISM_DATABASE_DRIVER=mysql
+      PHOTOPRISM_DATABASE_NAME=${PHOTOPRISM_DATABASE_NAME}
+      PHOTOPRISM_DATABASE_PASSWORD=${PHOTOPRISM_DATABASE_PASSWORD}
+      PHOTOPRISM_DATABASE_SERVER=photoprism-mariadb:3306
+      PHOTOPRISM_DATABASE_USER=${PHOTOPRISM_DATABASE_USER}
+      PHOTOPRISM_DEFAULT_TLS=true
+      PHOTOPRISM_DETECT_NSFW=false
+      PHOTOPRISM_DISABLE_CHOWN=false
+      PHOTOPRISM_DISABLE_CLASSIFICATION=false
+      PHOTOPRISM_DISABLE_FACES=false
+      PHOTOPRISM_DISABLE_RAW=false
+      PHOTOPRISM_DISABLE_SETTINGS=false
+      PHOTOPRISM_DISABLE_TENSORFLOW=false
+      PHOTOPRISM_DISABLE_TLS=false
+      PHOTOPRISM_DISABLE_VECTORS=false
+      PHOTOPRISM_DISABLE_WEBDAV=false
+      PHOTOPRISM_EXPERIMENTAL=false
+      PHOTOPRISM_FFMPEG_BITRATE=64
+      PHOTOPRISM_FFMPEG_ENCODER=software
+      PHOTOPRISM_FFMPEG_SIZE=3840
+      PHOTOPRISM_GID=${PGID}
+      PHOTOPRISM_HTTP_COMPRESSION=gzip
+      PHOTOPRISM_INIT="https gpu tensorflow"
+      PHOTOPRISM_JPEG_QUALITY=100
+      PHOTOPRISM_LOG_LEVEL=info
+      PHOTOPRISM_ORIGINALS_LIMIT=1000000
+      PHOTOPRISM_RAW_PRESETS=false
+      PHOTOPRISM_READONLY=false
+      PHOTOPRISM_SITE_AUTHOR="Optimus Prime"
+      PHOTOPRISM_SITE_CAPTION="Megatron must be stopped. No matter the cost."
+      PHOTOPRISM_SITE_DESCRIPTION="There's a thine line between being a hero and being a memory."
+      PHOTOPRISM_SITE_TITLE="PhotoPrism"
+      PHOTOPRISM_SITE_URL=http://localhost:2342/
+      PHOTOPRISM_UID=${PUID}
+      PHOTOPRISM_UMASK=${UMASK}
+      PHOTOPRISM_UPLOAD_NSFW=true
+      PUID=${PUID}
+      TZ=${TZ}
+      UMASK=${UMASK}
     networks:
       - media
     working_dir: "/photoprism"
