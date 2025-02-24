@@ -4,17 +4,17 @@
 
 
 services:
-  alertmanager:
-    container_name: alertmanager
-    hostname: alertmanager
-    image: prom/alertmanager:v0.27.0
-    user: 1000:1000
-    volumes:
-      - ${CONFIG_BASE_DIR}/prometheus/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
-      - ${CONFIG_BASE_DIR}/prometheus/config/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
-    ports:
-      - 9093:9093
-    restart: always
+#  alertmanager:
+#    container_name: alertmanager
+#    hostname: alertmanager
+#    image: prom/alertmanager:v0.27.0
+#    user: 1000:1000
+#    volumes:
+#      - ${CONFIG_BASE_DIR}/prometheus/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+#      - ${CONFIG_BASE_DIR}/prometheus/config/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+#    ports:
+#      - 9093:9093
+#    restart: always
   
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -185,12 +185,12 @@ services:
     cpu_shares: 768
     security_opt:
       - no-new-privileges=true
-    user: 1000:1000
+    user: 0:0
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:9090/ || exit 1
     volumes:
       - ${CONFIG_BASE_DIR}/prometheus/data:/prometheus:rw
-      - ${CONFIG_BASE_DIR}/prometheus/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - ${CONFIG_BASE_DIR}/prometheus/config:/etc/prometheus:ro
     ports:
       - 9090:9090
     command:

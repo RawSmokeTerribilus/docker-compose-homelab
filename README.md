@@ -590,6 +590,7 @@ _relative_ to the container (i.e. **not** the actual location of the files on
 ### TODO: [Add Gluetun instructions]
 ### TODO: [Fix Mylar3 error 500]
 ### TODO: [Fix Homeassistant errors]
+### TODO: [Fix AlertManager]
 ### TODO: [Inform Qbit image not login in firefox] (it does login in any other browser)
 ### TODO: [Fix docker-compose-photos.yaml] (it has been replaced by a docker-compose-photoprism.yml that works)
 ### TODO: [Remove Paperles-ngx and create image with https://github.com/paperless-ngx/paperless-ngx]
