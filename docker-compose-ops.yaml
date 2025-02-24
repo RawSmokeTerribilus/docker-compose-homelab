@@ -44,7 +44,7 @@ services:
     hostname: grafana
     depends_on:
       - grafana_postgres
-    user: 1000:1000
+    user: 0:0
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
