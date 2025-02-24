@@ -5,7 +5,7 @@
 
 services:
   immich_server:
-    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION}
     container_name: immich_server
     hostname: immich-server
     depends_on:
