@@ -156,9 +156,9 @@ services:
       - PHOTOPRISM_ORIGINALS_LIMIT=1000000
       - PHOTOPRISM_RAW_PRESETS=false
       - PHOTOPRISM_READONLY=false
-      - PHOTOPRISM_SITE_AUTHOR="John Wyles"
-      - PHOTOPRISM_SITE_CAPTION="A walk down memory lane..."
-      - PHOTOPRISM_SITE_DESCRIPTION="A walk down memory lane..."
+      - PHOTOPRISM_SITE_AUTHOR="Optimus Prime"
+      - PHOTOPRISM_SITE_CAPTION="Megatron must be stopped. No matter the cost."
+      - PHOTOPRISM_SITE_DESCRIPTION="There's a thine line between being a hero and being a memory."
       - PHOTOPRISM_SITE_TITLE="PhotoPrism"
       - PHOTOPRISM_SITE_URL=http://localhost:2342/
       - PHOTOPRISM_UID=${PUID}
