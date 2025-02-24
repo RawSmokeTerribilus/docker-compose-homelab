@@ -21,7 +21,7 @@ NAS or media center
   - [Installation and Setup](#installation-and-setup)
   - [Directory Structure](#directory-structure)
   - [Environment Variables](#environment-variables)
-  - [TODO](#todo)
+  - [TODO](#todo) (#todo-add-gluetun-instructions)
     
 
 ## Useful Resources To Have On-hand
@@ -587,7 +587,7 @@ _relative_ to the container (i.e. **not** the actual location of the files on
 
 ### TODO: [Add NEXTCLOUD]
 ### TODO: [Add getdashdot.com]
-### TODO: [Add Gluetun instructions](#todo-add-gluetun-instructions)
+### TODO: [Add Gluetun instructions]
 ### TODO: [Fix Mylar3 error 500]
 ### TODO: [Fix Paperless error 500]
 ### TODO: [Fix Homeassistant errors]
