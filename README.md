@@ -240,7 +240,7 @@ values Docker compose needs then everything should proceed smoothly:
       - `docker compose --file docker-compose-tools.yaml --env-file environment_variables.env up --detach`
       - `docker compose --file docker-compose-downloaders.yaml --env-file environment_variables.env up --detach`
       - `docker compose --file docker-compose-media-players.yaml --env-file environment_variables.env up --detach`
-      - `docker compose --file docker-compose-photos.yaml --env-file environment_variables.env up --detach`
+      - `docker compose --file docker-compose-photprism.yml --env-file environment_variables.env up --detach`
       - `docker compose --file docker-compose-servarr.yaml --env-file environment_variables.env up --detach`
     - Also if you'd like to setup Kometa you'll want to add a cron entry you
       run periodically (around every 24-96 hours) with the following command or
