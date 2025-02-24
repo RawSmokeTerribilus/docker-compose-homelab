@@ -97,6 +97,7 @@ services:
     volumes:
       - ${CONFIG_BASE_DIR}/paperless-ngx:/config
       - ${DOCUMENTS_DIR_LOCAL}/paperless-ngx:/data
+      - ${DOCUMENTS_DIR_LOCAL}:/documents
     ports:
       - 8001:8008
     restart: unless-stopped

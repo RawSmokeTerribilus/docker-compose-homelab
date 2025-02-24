@@ -14,7 +14,7 @@ NAS or media center
     - [`docker-compose-tools.yaml`](#docker-compose-toolsyaml)
     - [`docker-compose-downloaders.yaml`](#docker-compose-downloadersyaml)
     - [`docker-compose-servarr.yaml`](#docker-compose-servarryaml)
-    - [`docker-compose-photos.yaml`](#docker-compose-photosyaml)
+    - [`docker-compose-photoprism.yaml`](#docker-compose-photosyaml)
     - [`docker-compose-media-players.yaml`](#docker-compose-media-playersyaml)
     - [`docker-compose-kometa.yaml`](#docker-compose-kometayaml)
     - [`docker-compose-homeassistant.yaml`](#docker-compose-homeassistantyaml)
