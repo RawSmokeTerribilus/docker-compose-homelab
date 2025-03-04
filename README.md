@@ -176,44 +176,53 @@ those out as well (to keep down the noise in your `.env` file. To create each of
 the directories run the following after the command above:
 
 ```shell
+# Media Center Core
 mkdir -p ${CONFIG_BASE_DIR}/bazarr
-# mkdir -p ${CONFIG_BASE_DIR}/caddy
 mkdir -p ${CONFIG_BASE_DIR}/deluge
-# mkdir -p ${CONFIG_BASE_DIR}/delugevpn
-#mkdir -p ${CONFIG_BASE_DIR}/gluetun
-mkdir -p ${CONFIG_BASE_DIR}/grafana/database
-mkdir -p ${CONFIG_BASE_DIR}/grafana/snmp
-mkdir -p ${CONFIG_BASE_DIR}/grafana/storage
-#mkdir -p ${CONFIG_BASE_DIR}/immich/cache
-#mkdir -p ${CONFIG_BASE_DIR}/immich/database
+mkdir -p ${CONFIG_BASE_DIR}/emby
+mkdir -p ${CONFIG_BASE_DIR}/grafana/{database,storage,snmp}
+mkdir -p ${CONFIG_BASE_DIR}/homarr/{configs,icons,data}
 mkdir -p ${CONFIG_BASE_DIR}/jellyfin
 mkdir -p ${CONFIG_BASE_DIR}/jellyseerr
-#mkdir -p ${CONFIG_BASE_DIR}/kometa
 mkdir -p ${CONFIG_BASE_DIR}/lidarr
-#mkdir -p ${CONFIG_BASE_DIR}/mylar3
+mkdir -p ${CONFIG_BASE_DIR}/nextcloud-aio  # For potential future use
 mkdir -p ${CONFIG_BASE_DIR}/notifiarr
-# mkdir -p ${CONFIG_BASE_DIR}/nzbget
 mkdir -p ${CONFIG_BASE_DIR}/ofelia
-mkdir -p ${CONFIG_BASE_DIR}/overseerr
-#mkdir -p ${CONFIG_BASE_DIR}/paperless-ngx
-mkdir -p ${CONFIG_BASE_DIR}/photoprism/database
-mkdir -p ${CONFIG_BASE_DIR}/photoprism/storage
-#mkdir -p ${CONFIG_BASE_DIR}/plex
+mkdir -p ${CONFIG_BASE_DIR}/photoprism/{database,storage}
 mkdir -p ${CONFIG_BASE_DIR}/portainer
-mkdir -p ${CONFIG_BASE_DIR}/prometheus/config
-mkdir -p ${CONFIG_BASE_DIR}/prometheus/data
+mkdir -p ${CONFIG_BASE_DIR}/prometheus/{config,data}
 mkdir -p ${CONFIG_BASE_DIR}/prowlarr
 mkdir -p ${CONFIG_BASE_DIR}/qbittorrent
 mkdir -p ${CONFIG_BASE_DIR}/radarr
 mkdir -p ${CONFIG_BASE_DIR}/readarr
-#mkdir -p ${CONFIG_BASE_DIR}/sabnzbd
-# mkdir -p ${CONFIG_BASE_DIR}/sabnzbdvpn
-mkdir -p ${CONFIG_BASE_DIR}/searxng
 mkdir -p ${CONFIG_BASE_DIR}/sonarr
 mkdir -p ${CONFIG_BASE_DIR}/syncthing
-#mkdir -p ${CONFIG_BASE_DIR}/tailscale
-#mkdir -p ${CONFIG_BASE_DIR}/tautulli
-#mkdir -p ${CONFIG_BASE_DIR}/transmission
+mkdir -p ${CONFIG_BASE_DIR}/tdarr/{server,configs,logs,transcode_cache}
+mkdir -p ${CONFIG_BASE_DIR}/unpackerr
+
+# Monitoring Stack
+mkdir -p ${CONFIG_BASE_DIR}/cadvisor
+mkdir -p ${CONFIG_BASE_DIR}/node_exporter
+mkdir -p ${CONFIG_BASE_DIR}/snmp_exporter
+mkdir -p ${CONFIG_BASE_DIR}/speedtest_exporter
+
+# Optional/Inactive Services (commented out)
+# mkdir -p ${CONFIG_BASE_DIR}/caddy
+# mkdir -p ${CONFIG_BASE_DIR}/delugevpn
+# mkdir -p ${CONFIG_BASE_DIR}/gluetun
+# mkdir -p ${CONFIG_BASE_DIR}/immich/{cache,database}
+# mkdir -p ${CONFIG_BASE_DIR}/kometa
+# mkdir -p ${CONFIG_BASE_DIR}/mylar3
+# mkdir -p ${CONFIG_BASE_DIR}/nzbget
+# mkdir -p ${CONFIG_BASE_DIR}/overseerr
+# mkdir -p ${CONFIG_BASE_DIR}/paperless-ngx
+# mkdir -p ${CONFIG_BASE_DIR}/plex
+# mkdir -p ${CONFIG_BASE_DIR}/sabnzbd
+# mkdir -p ${CONFIG_BASE_DIR}/sabnzbdvpn
+# mkdir -p ${CONFIG_BASE_DIR}/searxng
+# mkdir -p ${CONFIG_BASE_DIR}/tailscale
+# mkdir -p ${CONFIG_BASE_DIR}/tautulli
+# mkdir -p ${CONFIG_BASE_DIR}/transmission
 # mkdir -p ${CONFIG_BASE_DIR}/transmission-openvpn
 ```
 
@@ -477,7 +486,6 @@ _relative_ to the container (i.e. **not** the actual location of the files on
 - **P3:** Add documentation or maybe breakout Home Assistant
 
 ### TODO: [Add new services to 'Service Categories and Applications' description in readme.md]
-### TODO: [Add new volumes to "mkdir" commands in readme.md]
 ### TODO: [Add getdashdot.com]
 ### TODO: [Add Gluetun instructions]
 ### TODO: [Fix Mylar3 error 500]
