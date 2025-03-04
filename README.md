@@ -1,3 +1,23 @@
+## 🎩 Attribution & Gratitude
+
+<p align="center">
+  <a href="https://github.com/johnwyles">
+    <img src="https://img.shields.io/badge/Original_Creator-John_Wyles-7D4698?style=for-the-badge&logo=github-sponsors&logoColor=white" alt="John Wyles">
+  </a>
+  <br>
+  <a href="https://github.com/johnwyles/docker-compose-media-center">
+    <img src="https://img.shields.io/badge/🚀_Original_Repository-docker--compose--media--center-40B5A4?style=for-the-badge&logo=git&logoColor=white" alt="Original Repository">
+  </a>
+</p>
+
+> _"We stand on the shoulders of giants" - Isaac Newton_  
+> This project exists thanks to [John Wyles'](https://github.com/johnwyles) groundbreaking work in home server automation.  
+> Massive respect to the original [docker-compose-media-center](https://github.com/johnwyles/docker-compose-media-center) repository that inspired this evolution.
+
+### 🌟 Special Thanks
+<kbd> <br> Visit John's GitHub Profile <br> </kbd> 
+[![Profile](https://img.shields.io/badge/%F0%9F%91%8B_@johnwyles-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/johnwyles)
+
 # docker-compose-media-center
 
 This respository contains the Docker compose files for standing up an entire Servarr
