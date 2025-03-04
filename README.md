@@ -2,26 +2,27 @@
 
 This respository contains the Docker compose files for standing up an entire Servarr
 stack along with a other supporting tools and services best suited for an at-home
-NAS or media center
+NAS or media center, of course based on Linux and using cloudflare tunnels to expose
+your services  (if you were wondering why there isn't a reverso proxy in the stack)
 
 **Table of contents:**
 - [docker-compose-media-center](#docker-compose-media-center)
   - [Useful Resources To Have On-hand](#useful-resources-to-have-on-hand)
-  - [Docker Compose Files and the Applications and Services Within](#docker-compose-files-and-the-applications-and-services-within)
-    - [`portainer/docker-compose-portainer.yaml`](#portainerdocker-compose-portaineryaml)
-    - [`docker-compose-crypto.yaml` \[OPTIONAL\]](#docker-compose-cryptoyaml-optional)
-    - [`docker-compose-ops.yaml`](#docker-compose-opsyaml)
-    - [`docker-compose-tools.yaml`](#docker-compose-toolsyaml)
-    - [`docker-compose-downloaders.yaml`](#docker-compose-downloadersyaml)
-    - [`docker-compose-servarr.yaml`](#docker-compose-servarryaml)
-    - [`docker-compose-photoprism.yaml`](#docker-compose-photosyaml)
-    - [`docker-compose-media-players.yaml`](#docker-compose-media-playersyaml)
-    - [`docker-compose-kometa.yaml`](#docker-compose-kometayaml)
-    - [`docker-compose-homeassistant.yaml`](#docker-compose-homeassistantyaml)
+  - [Service Categories and Applications](#service-categories-and-applications)
+    - [Portainer](#portainer)
+    - [Crypto Tools [OPTIONAL]](#crypto-tools-optional)
+    - [Operations](#operations)
+    - [Utility Tools](#utility-tools)
+    - [Download Clients](#download-clients)
+    - [Servarr Stack](#servarr-stack)
+    - [Photo Management](#photo-management)
+    - [Media Players](#media-players)
+    - [Media Management](#media-management)
+    - [Home Automation](#home-automation)
   - [Installation and Setup](#installation-and-setup)
   - [Directory Structure](#directory-structure)
   - [Environment Variables](#environment-variables)
-  - [TODO](#todo) (#todo-add-gluetun-instructions)
+  - [TODO](#todo)
     
 
 ## Useful Resources To Have On-hand
@@ -47,158 +48,51 @@ documents that somewhat explain the services but is more of an excellent source
 for general best practices as well as offering tips and providing help for some
 edge cases you may encounter.
 
-## Docker Compose Files and the Applications and Services Within
+## Service Categories and Applications
 
-Below are a list of all of the Docker compose files that setup a Servarr stack,
-some associated assisting tools, media players, and also miscellaneous self-hosted
-tools you can skip and and/or remove from as well as mostly links to their
-associated Docker image sources, GitHub repositories, or
+Below is a list of all the services available in the consolidated docker-compose.yml file. These services setup a complete Servarr stack with associated tools, media players, and miscellaneous self-hosted utilities. You can enable or disable specific services by editing the docker-compose.yml file. This section provides links to Docker image sources, GitHub repositories, and descriptions of each service.
 
-### `portainer/docker-compose-portainer.yaml`
+### Portainer
 
-- [Portainer](https://hub.docker.com/r/portainer/portainer) Portainer for
-  managing the remaining "Stacks" (docker-compose files).
+- [Portainer](https://hub.docker.com/r/portainer/portainer): Portainer for managing Docker containers and monitoring resource usage.
 
-### `docker-compose-crypto.yaml` [OPTIONAL]
+### Crypto Tools [OPTIONAL]
 
-**NOTE:** I do not set this up in later steps below as I highly doubut you will want
-to peg your CPU and run this utility alongside what this guide was meant to assit
-in setting up. You will likely find it completely unnessesary but feel free to
-contact me if you would like more information.
+**NOTE:** These services are disabled by default in the compose file as they can be CPU intensive and may not be necessary for most users. Contact the project maintainer if you would like more information.
 
-- ~~[rana](https://github.com/grunch/rana): A tool for finding _vanity_ public
-  keys used with `nostr`.~~
-- ~~[vanity-age](https://github.com/johnwyles/vanity-age): A rewrite in a fork I
-  did of [vanity-age](https://github.com/sobaq/vanity-age) for finding _vanity_
-  public `age` keys.~~
+- ~~[rana](https://github.com/grunch/rana): A tool for finding _vanity_ public keys used with `nostr`.~~
+- ~~[vanity-age](https://github.com/johnwyles/vanity-age): A rewrite in a fork of [vanity-age](https://github.com/sobaq/vanity-age) for finding _vanity_ public `age` keys.~~
 
-### `docker-compose-ops.yaml`
-- [cAdvisor](https://github.com/google/cadvisor): A tool for monitoring Docker
-  containers, images, system resources, etc.
-- [Grafana](https://github.com/grafana/grafana): A tool for visualizing metrics.
-- [iperf]([iperf3](https://github.com/esnet/iperf)): A utility used to test
-  speeds between two machines. Both a client and server tool in one. In this
-  case we will run the container in server mode.
-- [Ofelia](https://github.com/mcuadros/ofelia): A tool for scheduling cron jobs
-  in Docker containers.
-- [Prometheus](https://github.com/prometheus/prometheus): A tool for monitoring
-  metrics and statistics.
-- [Prometheus SNMP Exporter](): An important utility for collection device
-  statistics for the Synolog NAS
-- [Redis](https://github.com/redis/redis): A tool for caching and storing data.
-- [Watchtower](https://github.com/containrrr/watchtower): Watchtower for watching
-  updates to docker images and pulling them down.
+### Operations
 
-### `docker-compose-tools.yaml`
-- [Homarr](https://homarr.dev/): A sleek, modern dashboard.
-- [Tdarr](https://home.tdarr.io/): Tdarr is a conditional based transcoding
-  application for automating media library transcode/remux management.
-- ~~[Paperless-NGX](https://github.com/paperless-ngx/paperless-ngx): A tool for 
-  organizing documents and files.~~
-- ~~[SearXNG](https://github.com/searxng/searxng-docker): Utility for an internet
-  metasearch engine that aggregates search results.~~
-- [Syncthing](https://github.com/linuxserver/docker-syncthing): Utility for
-  syncing files across machines.
-- ~~[Tailscale](https://hub.docker.com/r/tailscale/tailscale): Private VPN to
-  chain together your home network and other networks and machines for sharing
-  services and files.~~
-- ~~[Wallabag](https://github.com/wallabag/wallabag): 
-  wallabag is a web application allowing you to save web pages for later reading.~~
+- [cAdvisor](https://github.com/google/cadvisor): A tool for monitoring Docker containers, images, system resources, etc.
+- [Grafana](https://github.com/grafana/grafana): A tool for visualizing metrics a### Media Players
 
-### `docker-compose-downloaders.yaml`
+- [Jellyfin](https://github.com/jellyfin/jellyfin): A free software media system to organize, manage, and stream media.
+- [Jellyseerr](https://github.com/Fallenbagel/jellyseerr): Request management and media discovery tool for Jellyfin.
+- [Overseerr](https://github.com/sct/overseerr): Request management and media discovery tool for Plex.
+- [Plex](https://github.com/plexinc/plex-media-server): A client-server media player system and software suite.
+- [Tautulli](https://github.com/Tautulli/Tautulli): A Python based monitoring and tracking tool for Plex Media Server.
 
-**NOTE:**: For posterity's sake I left in SABnzbdVPN and Transmission-OpenVPN
-but they are commented out in the `docker-compose-downloaders.yaml` file. I
-found using [glueun](`https://github.com/qdm12/gluetun`) mentioned above to be a
-better utility to operate as a VPN killswitch universally I could plug any
-container I wanted to up to it.
+### Media Management
 
-- [Deluge](https://github.com/linuxserver/docker-deluge): Deluge for torrent
-  downloads.
-- ~~[Exportarr](https://github.com/onedr0p/exportarr): Exportarr for metrics (SABnzbd).~~
-- ~~[Gluetun](https://github.com/qdm12/gluetun): Utility for a base VPN killswitch
-  container that the downloading containers filter through when downloading.~~
-- ~~[NZBGet](https://github.com/linuxserver/docker-nzbget): NZBGet for Usenet
-  downloads.~~
-- [qBitorrent](https://docs.linuxserver.io/images/docker-qbittorrent/): A
-  sophisticated and battle tested bittorrent client.
-- ~~[SABnzbd](https://github.com/linuxserver/docker-sabnzbd) SABnzbd for Usenet
-  downloads.~~
-- ~~[SABnnzdVPN](https://github.com/binhex/arch-sabnzbdvpn) SABnzbd with OpenVPN
-  for torrent downloads which includes a VPN killswitch to stop downloading on
-  loss of a VPN connection.~~
-- ~~[Tranismission](https://github.com/linuxserver/docker-transmission)
-  Transmission for torrent downloads.~~
-- ~~[Transmission-OpenVPN](https://github.com/haugene/docker-transmission-openvpn):
-  Transmission with OpenVPN for torrent downloads which includes a VPN killswitch
-  to stop downloading on loss of a VPN connection.~~
-- [Unpackerr](https://hub.docker.com/r/golift/unpackerr): Unpackerr for any
-  unpacking in post-processing after download.
+- [Tdarr](https://github.com/HaveAGitGat/Tdarr): Audio/Video library analytics and transcode automation.
+- [Kometa](https://github.com/kometapp/kometa): Media management and organization tool.
 
-### `docker-compose-servarr.yaml`
+### Home Automation
 
-- [Bazarr](https://github.com/linuxserver/docker-bazarr): Bazarr for adding
-  Subtitles to media found in Radarr and Sonarr.
-- [Exportarr](https://github.com/onedr0p/exportarr): Exportarr for metrics.
-- ~~[Mylar3](https://github.com/mylar3/mylar3): Mylar3 for Comic Books.~~
-- [Lidarr](https://github.com/linuxserver/docker-lidarr): Lidarr for Music.
-- [Notifiarr](https://hub.docker.com/r/golift/notifiarr): Notifiarr for Discord
-  and Webhooks.
-- [Prowlarr](https://github.com/linuxserver/docker-prowlarr): Prowlarr for
-  adding Indexers to Stararr services.
-- [Radarr](https://github.com/linuxserver/docker-radarr): Radarr for Movies.
-- [Readarr](https://github.com/linuxserver/docker-readarr): Readarr for eBooks
-  and Audiobooks.
-- [Sonarr](https://github.com/linuxserver/docker-sonarr): Sonarr for TV series
-  and shows.
-
-### `docker-compose-photoprism.yml` 
-
-- ~~[Immich](https://github.com/immich-app/immich): The new photo management
-  utility on the block for managing photos, videos, and other assorted media
-  with object, color, face, and other recognition and tagging. Fairly unstable~~
-- [Photo Prism](https://github.com/photoprism/photoprism): A  battle tested and
-  more stable photo, video, and assorted media organization utility for manging
-  media
-
-### `docker-compose-media-players.yaml`
-
-- [Emby] (https://emby.media/) Origin from the Jellyfin project (not opensource)
-- [Jellyfin](https://github.com/linuxserver/docker-jellyfin): Jellyfin media
-  center for viewing and playing all of your media.~~
-- [Jellyseerr](https://hub.docker.com/r/fallenbagel/jellyseerr): Jellyseerr
-  (Overseerr fork) for browsing and discovering of new media.~~
-- ~~[Plex](https://github.com/linuxserver/docker-plex): Plex media center for
-  viewing and playing all of your media.~~
-- ~~[Tautulli](https://github.com/linuxserver/docker-tautulli): Tautulli for Plex
-  statistics and monitoring.~~
-- ~~[Overseerr](https://github.com/linuxserver/docker-overseerr): Overseer for
-  browsing and discovering of new media.~~
-
-### `docker-compose-kometa.yaml`
-
-- ~~[Kometa](https://github.com/Kometa-Team/Kometa): A fairly complex piece of
-  software to render badges, evaluate audience/user/critic ratings, creat/manage
-  collections, and a whole host of many other things. The best way to get
-  started is probably seeing some explanations and visuals on the on the wiki.~~
-  ~~[Kometa wiki page](https://metamanager.wiki/en/latest/).~~
-
-### `docker-compose-homeassistant.yaml`
-
-- [Home Assistant](https://www.home-assistant.io/installation/linux#docker-compose):
-  This is not only the popular open-source home automation suite, Home Assistant,
-  but also a number of tools and services that compliment it. This file will
-  likely be *heavily* modified from the boiler plate file included here. I have
-  made extensive comments as to what each service is and I assure you your setup
-  will largely differ. This is just a collection of how I have set up my home
-  automation using Home Assistant and hopefully can be of some help to you. I
-  will continue to update it as genericly as I can so it hopefully is of
-  greater use as a jumping off point.
+- [Home Assistant](https://github.com/home-assistant/core): Open-source home automation platform running on Python.
+- [Node-RED](https://github.com/node-red/node-red): Flow-based programming for the Internet of Things.
+- [Zigbee2MQTT](https://github.com/Koenkk/zigbee2mqtt): Zigbee to MQTT bridge, get rid of proprietary Zigbee bridges.
 
 ## Installation and Setup
 
-1. Install Docker
+The setup process has been simplified with a consolidated docker-compose.yml file. Follow these steps to deploy your homelab services:
+
+1. Install Docker and Docker Compose on your system
+
 2. Create a `media` network with:
+
 
     ```shell
     docker network create \
@@ -214,50 +108,47 @@ container I wanted to up to it.
       media
     ```
 
-3. Edit and move the file `environment_variables.env.example` saving it to the
-file to `.env` substituting with values you have after starting and setting up
-many of the services and applications. **IMPORTANT NOTE:** Complete the few
-values
-necessary and update the `.env` files as you go. You must complete each **must**
-service _before_ moving to the next step. This means your `.env` file does not
-need to have ALL the correct values from the start. Just as long as you have the
-values Docker compose needs then everything should proceed smoothly:
-    - [Directory Structure](#directory-structure)
-    - [Environment Variables](#environment-variables)
-1. Run these `docker compose` commands in order (**Note:** there are few
-  `depends_on` throughout though internally the `docker-compose-downloaders.yaml`
-  file has containers which are dependent on another - i.e. `sabnzbd` and `deluge`
-  use the `gluetun` network service to utilize it's utility as a VPN killswitch):
-    - First thing we do is make sure the portainer Docker compose file is in the
-      `portainer/` directory. This is because Portainer is weird and launches
-      with a stack named after the parent directory to the image it is launch is
-      called. This way in our case it will be `portainer` now:
-      - `cd portainer/`
-      - `docker compose --file docker-compose-portainer.yaml --env-file ../environment_variables.env up --detach`
-    - And now for the rest:
-      - `cd ../`
-      - `docker compose --file docker-compose-ops.yaml --env-file environment_variables.env up --detach`
-      - `docker compose --file docker-compose-tools.yaml --env-file environment_variables.env up --detach`
-      - `docker compose --file docker-compose-downloaders.yaml --env-file environment_variables.env up --detach`
-      - `docker compose --file docker-compose-media-players.yaml --env-file environment_variables.env up --detach`
-      - `docker compose --file docker-compose-photprism.yml --env-file environment_variables.env up --detach`
-      - `docker compose --file docker-compose-servarr.yaml --env-file environment_variables.env up --detach`
-    - Also if you'd like to setup Kometa you'll want to add a cron entry you
-      run periodically (around every 24-96 hours) with the following command or
-      the alternative listed afterwards:
-      - `docker-compose --file docker-compose-kometa.yaml --env-file environment_variables.env up kometa --detach`
-      - Open `jobs.ini` in `ofelia` and add the following:
-        - ```ini
-          [job-exec "kometa daily"]
-            schedule = 45 11 * * *
-            container = kometa
-            command =  photoprism index --cleanup
-            no-overlap = true
-          ```
-    - If you'd also like to setup Home Assistant you'll want to run that with
-      the following command:
-       - `docker-compose --file docker-compose-homeassistant.yaml --env-file environment_variables.env up --detach`
+3. Copy the `environment_variables.env.example` file to `.env` and update the variables according to your configuration:
+   ```shell
+   cp environment_variables.env.example .env
+   nano .env  # Or use your preferred text editor
+   ```
+   
+   **IMPORTANT NOTE:** You don't need to complete all values at once. Fill in the essential ones to start and update others as you set up services. See the [Environment Variables](#environment-variables) section for details.
 
+4. Create the necessary directories for service configuration as described in the [Directory Structure](#directory-structure) section.
+
+4.b First thing we do is make sure the portainer Docker compose file is in the portainer/ directory. This is because Portainer is weird and launches with a stack named after
+    the parent directory to the image it is launch is called. This way in our case it will be portainer now:
+    ```shell
+    cd portainer/
+    docker compose --file docker-compose-portainer.yaml --env-file ../environment_variables.env up --detach
+    ```
+
+5. Deploy all services at once with:
+   ```shell
+   docker-compose up -d
+   ```
+   
+   Or deploy specific service groups by using labels:
+   ```shell
+   # Example: Deploy only download clients
+   docker-compose up -d --scale "group=downloaders"
+   
+   # Example: Deploy only the Servarr stack
+   docker-compose up -d --scale "group=servarr"
+   ```
+
+6. Access Portainer at `http://your-server-ip:9000` to manage your containers through a web interface.
+
+7. For Kometa scheduling, add the following to the `jobs.ini` file in the `ofelia` config directory:
+   ```ini
+   [job-exec "kometa daily"]
+     schedule = 45 11 * * *
+     container = kometa
+     command = photoprism index --cleanup
+     no-overlap = true
+   ```
 
 ## Directory Structure
 
@@ -565,7 +456,7 @@ _relative_ to the container (i.e. **not** the actual location of the files on
   images (e.g. 21600 ("6 hours"))
 - `WIREGUARD_PRIVATE_KEY`: Gluetun wireguard private key setting (Author note: I
   do regret if you have to go through setting this arduous process... Details
-  here (for NordVPN at least):
+  here for NordVPN at least):
   [Getting NordVPN WireGuard details](https://gist.github.com/bluewalk/7b3db071c488c82c604baf76a42eaad3)
 
 ## TODO
@@ -585,9 +476,8 @@ _relative_ to the container (i.e. **not** the actual location of the files on
 - **P3:** Figure out searxng
 - **P3:** Add documentation or maybe breakout Home Assistant
 
-### TODO: [Add Flaresolverr]
-### TODO: [Add Jackett]
-### TODO: [Add NEXTCLOUD]
+### TODO: [Add new services to 'Service Categories and Applications' description in readme.md]
+### TODO: [Add new volumes to "mkdir" commands in readme.md]
 ### TODO: [Add getdashdot.com]
 ### TODO: [Add Gluetun instructions]
 ### TODO: [Fix Mylar3 error 500]

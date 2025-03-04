@@ -1,0 +1,1344 @@
+# ||--------------------------------------------------------------------------------||
+# ||                             Consolidated Services                              ||
+# ||--------------------------------------------------------------------------------||
+
+services:
+  # ||--------------------------------------------------------------------------------||
+  # ||                                Media Players                                   ||
+  # ||--------------------------------------------------------------------------------||
+
+  emby:
+    image: lscr.io/linuxserver/emby:latest
+    container_name: emby
+    hostname: emby
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    volumes:
+      - ${CONFIG_BASE_DIR}/emby:/config
+      - ${MOVIES_DIR_LOCAL}:${MOVIES_DIR_RELATIVE}
+      - ${TV_DIR_LOCAL}:${TV_DIR_RELATIVE}
+    ports:
+      - 8097:8096
+      - 8921:8920
+    restart: unless-stopped
+
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    hostname: jellyfin
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    volumes:
+      - ${BOOKS_DIR_LOCAL}:${BOOKS_DIR_RELATIVE}
+      - ${CONFIG_BASE_DIR}/jellyfin:/config
+      - ${MOVIES_DIR_LOCAL}:${MOVIES_DIR_RELATIVE}
+      - ${MUSIC_DIR_LOCAL}:${MUSIC_DIR_RELATIVE}
+      - ${TV_DIR_LOCAL}:${TV_DIR_RELATIVE}
+    ports:
+      - 1900:1900/udp
+      - 7359:7359/udp
+      - 8096:8096
+      - 8920:8920
+    restart: unless-stopped
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    hostname: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    volumes:
+      - ${CONFIG_BASE_DIR}/jellyseerr:/app/config
+    ports:
+      - 5056:5055
+    restart: unless-stopped
+
+#  overseerr:
+#    image: lscr.io/linuxserver/overseerr:latest
+#    container_name: overseerr
+#    hostname: overseerr
+#    environment:
+#      - PGID=${PGID}
+#      - PUID=${PUID}
+#      - TZ=${TZ}
+#      - UMASK=${UMASK}
+#    networks:
+#      - media
+#    volumes:
+#      - ${CONFIG_BASE_DIR}/overseerr:/config
+#    ports:
+#      - 5055:5055
+#    restart: unless-stopped
+
+# plex:
+#   image: lscr.io/linuxserver/plex:latest
+#   container_name: plex
+#   hostname: plex
+#   environment:
+#     - PGID=${PGID}
+#     - PLEX_CLAIM=${PLEX_CLAIM}
+#     - PLEX_PASS=yes
+#     - PUID=${PUID}
+#     - UMASK=${UMASK}
+#     - VERSION=docker
+#   networks:
+#     - media
+#   volumes:
+#     - ${BOOKS_DIR_LOCAL}:${BOOKS_DIR_RELATIVE}
+#     - ${CONFIG_BASE_DIR}/plex/config:/config
+#     - ${MOVIES_DIR_LOCAL}:${MOVIES_DIR_RELATIVE}
+#     - ${MUSIC_DIR_LOCAL}:${MUSIC_DIR_RELATIVE}
+#     - ${PERSONAL_DIR_LOCAL}:${PERSONAL_DIR_RELATIVE}
+#     - ${TV_DIR_LOCAL}:${TV_DIR_RELATIVE}
+#   ports:
+#     - 3005:3005
+#     - 8324:8324
+#     - 32400:32400
+#     - 32410:32410
+#     - 32412:32412
+#     - 32413:32413
+#     - 32414:32414
+#     - 32469:32469
+#   restart: unless-stopped
+
+#  tautulli:
+#    image: lscr.io/linuxserver/tautulli:latest
+#    container_name: tautulli
+#    hostname: tautulli
+#    environment:
+#      - PGID=${PGID}
+#      - PUID=${PUID}
+#      - TZ=${TZ}
+#      - UMASK=${UMASK}
+#    networks:
+#      - media
+#    volumes:
+#      - ${CONFIG_BASE_DIR}/tautulli:/config
+#    ports:
+#      - 8181:8181
+#    restart: unless-stopped
+
+  # ||--------------------------------------------------------------------------------||
+  # ||                                 Indexers                                       ||
+  # ||--------------------------------------------------------------------------------||
+
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - AUTO_UPDATE=true #optional
+      - RUN_OPTS= #optional
+    networks:
+      - media
+    volumes:
+      - ${CONFIG_BASE_DIR}/jackett:/config
+      - ${DOWNLOADS_DIR_WATCH_LOCAL}:${DOWNLOADS_DIR_WATCH_RELATIVE}
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+
+  # ||--------------------------------------------------------------------------------||
+  # ||                           Downloading Applications                             ||
+  # ||--------------------------------------------------------------------------------||
+
+#  gluetun:
+#    image: qmcgaw/gluetun
+#    container_name: gluetun
+#    hostname: gluetun
+#    cap_add:
+#      - NET_ADMIN
+#    environment:
+#      - OPENVPN_PASSWORD=${VPN_PASS}
+#      - OPENVPN_USER=${VPN_USER}
+#      - PGID=${PGID}
+#      - PUID=${PUID}
+#      - SERVER_COUNTRIES=${SERVER_COUNTRIES}
+#      - TZ=${TZ}
+#      - UMASK=${UMASK}
+#      - VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER}
+#      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+#    networks:
+#      - media
+#    volumes:
+#      - ${CONFIG_BASE_DIR}/gluetun:/gluetun
+#    ports:
+#      - 6000:9000/tcp
+#      - 6881:6881 # qbittorrent
+#      - 6881:6881/udp # qbittorrent
+#      - 7000:8000/tcp
+#      - 8112:8112 # deluge
+#      - 8080:8080 # sabnzbd
+#      - 8091:8091 # qbittorrent
+#      - 9091:9091 # transmission/transmission-openvpn
+#      - 51413:51413 # transmission/transmission-openvpn
+#      - 51413:51413/udp # transmission/transmission-openvpn
+#    restart: unless-stopped
+
+  deluge:
+    image: lscr.io/linuxserver/deluge:latest
+    container_name: deluge
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DELUGE_LOGLEVEL=info
+      - UMASK=${UMASK}
+    networks:
+      - media
+    ports:
+      - 8112:8112
+      - 8118:8118
+      - 58846:58846
+      - 58946:58946/udp
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOWNLOADS_DIR_COMPLETE_LOCAL}:${DOWNLOADS_DIR_COMPLETE_RELATIVE}
+      - ${DOWNLOADS_DIR_COMPLETE_LOCAL2}:${DOWNLOADS_DIR_COMPLETE_RELATIVE2}
+      - ${DOWNLOADS_DIR_INCOMPLETE_LOCAL}:${DOWNLOADS_DIR_INCOMPLETE_RELATIVE}
+      - ${DOWNLOADS_DIR_WATCH_LOCAL}:${DOWNLOADS_DIR_WATCH_RELATIVE}
+      - ${CONFIG_BASE_DIR}/deluge:/config
+    restart: unless-stopped
+
+#  delugevpn:
+#    container_name: delugevpn
+#    image: binhex/arch-delugevpn
+#    cap_add:
+#      - NET_ADMIN
+#    environment:
+#      VPN_ENABLED: ${VPN_ENABLED}
+#      VPN_USER: ${VPN_USER}
+#      VPN_PASS: ${VPN_PASS}
+#      VPN_PROV: ${VPN_PROV}
+#      VPN_OPTIONS: ${VPN_OPTIONS}
+#      STRICT_PORT_FORWARD: ${STRICT_PORT_FORWARD}
+#      ENABLE_PRIVOXY: ${ENABLE_PRIVOXY}
+#      LAN_NETWORK: ${LAN_NETWORK}
+#      NAME_SERVERS: ${NAME_SERVERS}
+#      VPN_CLIENT: ${VPN_CLIENT}
+#      DELUGE_ENABLE_WEBUI_PASSWORD: ${DELUGE_ENABLE_WEBUI_PASSWORD}
+#      DELUGE_DAEMON_LOG_LEVEL: ${DELUGE_DAEMON_LOG_LEVEL}
+#      DELUGE_WEB_LOG_LEVEL: ${DELUGE_WEB_LOG_LEVEL}
+#      ADDITIONAL_PORTS: ${ADDITIONAL_PORTS}
+#      DEBUG: ${DEBUG}
+#      UMASK: ${UMASK}
+#      PUID: ${PUID}
+#      PGID: ${PGID}
+#    networks:
+#      - media
+#    ports:
+#      - 8112:8112
+#      - 8118:8118
+#      - 58846:58846
+#      - 58946:58946/udp
+#    volumes:
+#      - /etc/localtime:/etc/localtime:ro
+#      - ${DOWNLOADS_DIR_COMPLETE_LOCAL2}:${DOWNLOADS_DIR_COMPLETE_RELATIVE2}
+#      - ${DOWNLOADS_DIR_INCOMPLETE_LOCAL}:${DOWNLOADS_DIR_INCOMPLETE_RELATIVE}
+#      - ${DOWNLOADS_DIR_WATCH_LOCAL}:${DOWNLOADS_DIR_WATCH_RELATIVE}
+#      - ${CONFIG_BASE_DIR}/delugevpn:/config
+#    restart: unless-stopped
+
+#  nzbget:
+#    image: lscr.io/linuxserver/nzbget:latest
+#    container_name: nzbget
+#    environment:
+#      - NZBGET_PASS=${NZBGET_WEBUI_PASSWORD}
+#      - NZBGET_USER=${NZBGET_WEBUI_USERNAME}
+#      - PUID=${PUID}
+#      - PGID=${PGID}
+#      - TZ=${TZ}
+#      - UMASK=${UMASK}
+#    networks:
+#      - media
+#    # network_mode: "service:transmission-openvpn"
+#    volumes:
+#      - /etc/localtime:/etc/localtime:ro
+#      - ${DOWNLOADS_DIR_COMPLETE_LOCAL}:${DOWNLOADS_DIR_COMPLETE_RELATIVE}
+#      - ${DOWNLOADS_DIR_INCOMPLETE_LOCAL}:${DOWNLOADS_DIR_INCOMPLETE_RELATIVE}
+#      - ${DOWNLOADS_DIR_WATCH_LOCAL}:${DOWNLOADS_DIR_WATCH_RELATIVE}
+#      - ${CONFIG_BASE_DIR}/nzbget:/config
+#    ports:
+#      # nzbget
+#      - 6789:6789
+#    restart: unless-stopped
+
+#  nzbgetvpn:
+#    image: jarlave/nzbgetvpn:2020112501
+#    container_name: nzbgetvpn
+#    hostname: nzbgetvpn
+#    cap_add:
+#      - NET_ADMIN
+#    environment:
+#      - VPN_ENABLED=${VPN_ENABLED}
+#      - VPN_USER=${VPN_USER}
+#      - VPN_PASS=${VPN_PASS}
+#      - VPN_PROV=${VPN_PROV}
+#      - VPN_OPTIONS=${VPN_OPTIONS}
+#      - STRICT_PORT_FORWARD=${STRICT_PORT_FORWARD}
+#      - ENABLE_PRIVOXY=${ENABLE_PRIVOXY}
+#      - LAN_NETWORK=${LAN_NETWORK}
+#      - NAME_SERVERS=${NAME_SERVERS}
+#      - VPN_CLIENT=${VPN_CLIENT}
+#      - DELUGE_ENABLE_WEBUI_PASSWORD=${DELUGE_ENABLE_WEBUI_PASSWORD}
+#      - DELUGE_DAEMON_LOG_LEVEL=${DELUGE_DAEMON_LOG_LEVEL}
+#      - DELUGE_WEB_LOG_LEVEL=${DELUGE_WEB_LOG_LEVEL}
+#      - ADDITIONAL_PORTS=${ADDITIONAL_PORTS}
+#      - DEBUG=${DEBUG}
+#      - UMASK=${UMASK}
+#      - PUID=${PUID}
+#      - PGID=${PGID}
+#    networks:
+#      - media
+#    # network_mode: "service:transmission-openvpn"
+#    volumes:
+#      - /etc/localtime:/etc/localtime:ro
+#      - ${DOWNLOADS_DIR_COMPLETE_LOCAL}:${DOWNLOADS_DIR_COMPLETE_RELATIVE}
+#      - ${DOWNLOADS_DIR_INCOMPLETE_LOCAL}:${DOWNLOADS_DIR_INCOMPLETE_RELATIVE}
+#      - ${DOWNLOADS_DIR_WATCH_LOCAL}:${DOWNLOADS_DIR_WATCH_RELATIVE}
+#      - ${CONFIG_BASE_DIR}/nzbgetvpn:/config
+#    ports:
+#      # nzbget
+#      - 6789:6789
+#    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+      - WEBUI_PORT=8091
+    networks:
+      - media
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 8091:8091
+      - 51413:51413
+      - 51413:51413/udp
+    volumes:
+      - ${CONFIG_BASE_DIR}/qbittorrent:/config
+      - ${DOWNLOADS_DIR_COMPLETE_LOCAL}:${DOWNLOADS_DIR_COMPLETE_RELATIVE}
+      - ${DOWNLOADS_DIR_COMPLETE_LOCAL2}:${DOWNLOADS_DIR_COMPLETE_RELATIVE2}
+      - ${DOWNLOADS_DIR_INCOMPLETE_LOCAL}:${DOWNLOADS_DIR_INCOMPLETE_RELATIVE}
+      - ${DOWNLOADS_DIR_WATCH_LOCAL}:${DOWNLOADS_DIR_WATCH_RELATIVE}
+    restart: unless-stopped
+
+  unpackerr:
+    image: golift/unpackerr
+    container_name: unpackerr
+    user: 1000:1000
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UN_DEBUG=true
+      - UN_DIR_MODE=0775
+      - UN_FILE_MODE=0664
+      - UN_FOLDER_0_DELETE_AFTER=10m
+      - UN_FOLDER_0_DELETE_FILES=false
+      - UN_FOLDER_0_DELETE_ORIGINAL=false
+      - UN_FOLDER_0_EXTRACT_ISOS=true
+      - UN_FOLDER_0_EXTRACT_PATH=
+      - UN_FOLDER_0_MOVE_BACK=false
+      - UN_FOLDER_0_PATH=${DOWNLOADS_DIR_COMPLETE_RELATIVE2}
+      - UN_INTERVAL=2m
+      - UN_LIDARR_0_API_KEY=${UN_LIDARR_0_API_KEY}
+      - UN_LIDARR_0_DELETE_DELAY=5m
+      - UN_LIDARR_0_DELETE_ORIG=false
+      - UN_LIDARR_0_PATHS_0=${DOWNLOADS_DIR_COMPLETE_RELATIVE2}
+      - UN_LIDARR_0_PROTOCOLS=torrent,usenet
+      - UN_LIDARR_0_TIMEOUT=10s
+      - UN_LIDARR_0_URL=http://lidarr:8686
+      - UN_LOG_FILE_MB=10
+      - UN_LOG_FILE=
+      - UN_LOG_FILES=10
+      - UN_MAX_RETRIES=3
+      - UN_PARALLEL=1
+      - UN_RADARR_0_API_KEY=${UN_RADARR_0_API_KEY}
+      - UN_RADARR_0_DELETE_DELAY=5m
+      - UN_RADARR_0_DELETE_ORIG=false
+      - UN_RADARR_0_PATHS_0=${DOWNLOADS_DIR_COMPLETE_RELATIVE}
+      - UN_RADARR_0_PROTOCOLS=torrent,usenet
+      - UN_RADARR_0_TIMEOUT=10s
+      - UN_RADARR_0_URL=http://radarr:7878
+      - UN_READARR_0_API_KEY=${UN_READARR_0_API_KEY}
+      - UN_READARR_0_DELETE_DELAY=5m
+      - UN_READARR_0_DELETE_ORIG=false
+      - UN_READARR_0_PATHS_0=${DOWNLOADS_DIR_COMPLETE_RELATIVE2}
+      - UN_READARR_0_PROTOCOLS=torrent,usenet
+      - UN_READARR_0_TIMEOUT=10s
+      - UN_READARR_0_URL=http://readarr:8787
+      - UN_RETRY_DELAY=5m
+      - UN_SONARR_0_API_KEY=${UN_SONARR_0_API_KEY}
+      - UN_SONARR_0_DELETE_DELAY=5m
+      - UN_SONARR_0_DELETE_ORIG=false
+      - UN_SONARR_0_PATHS_0=${DOWNLOADS_DIR_COMPLETE_RELATIVE2}
+      - UN_SONARR_0_PROTOCOLS=torrent,usenet
+      - UN_SONARR_0_TIMEOUT=10s
+      - UN_SONARR_0_URL=http://sonarr:8989
+      - UN_START_DELAY=1m
+      - UN_WEBSERVER_METRICS=true
+      - UN_WEBSERVER_LISTEN_ADDR=0.0.0.0:5656
+      - UN_WEBSERVER_URLBASE=/unpackerr_metrics
+    networks:
+      - media
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ${DOWNLOADS_DIR_COMPLETE_LOCAL}:${DOWNLOADS_DIR_COMPLETE_RELATIVE}
+      - ${DOWNLOADS_DIR_COMPLETE_LOCAL2}:${DOWNLOADS_DIR_COMPLETE_RELATIVE2}
+    ports:
+      - 5656:5656
+    restart: unless-stopped
+
+  # ||--------------------------------------------------------------------------------||
+  # ||                              Servarr Applications                              ||
+  # ||--------------------------------------------------------------------------------||
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    hostname: bazarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    volumes:
+      - ${CONFIG_BASE_DIR}/bazarr:/config
+      - ${MOVIES_DIR_LOCAL}:${MOVIES_DIR_RELATIVE}
+      - ${TV_DIR_LOCAL}:${TV_DIR_RELATIVE}
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
+  bazarr-exporter:
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    container_name: bazarr-exporter
+    hostname: bazarr-exporter
+    command: ["bazarr"]
+    environment:
+      PORT: 9712
+      URL: http://bazarr:6767
+      APIKEY: ${BAZARR_API_KEY}
+    networks:
+      - media
+    ports:
+      - 9712:9712
+    restart: unless-stopped
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    hostname: lidarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    ports:
+      - 8686:8686
+    volumes:
+      - ${CONFIG_BASE_DIR}/lidarr:/config
+      - ${MUSIC_DIR_LOCAL}:${MUSIC_DIR_RELATIVE}
+      - ${DOWNLOADS_DIR_COMPLETE_LOCAL}:${DOWNLOADS_DIR_COMPLETE_RELATIVE}
+      - ${DOWNLOADS_DIR_INCOMPLETE_LOCAL}:${DOWNLOADS_DIR_INCOMPLETE_RELATIVE}
+    restart: unless-stopped
+
+  lidarr-exporter:
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    container_name: lidarr-exporter
+    hostname: lidarr-exporter
+    environment:
+      PORT: 9709
+      URL: http://lidarr:8686
+      APIKEY: ${LIDARR_API_KEY}
+    networks:
+      - media
+    ports:
+      - 9709:9709
+    command: ["lidarr"]
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    hostname: prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    volumes:
+      - ${CONFIG_BASE_DIR}/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+  prowlarr-exporter:
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    container_name: prowlarr-exporter
+    hostname: prowlarr-exporter
+    environment:
+      PORT: 9710
+      URL: http://prowlarr:8080
+      APIKEY: ${PROWLARR_API_KEY}
+      # PROWLARR_BACKFILL: true # optional
+      # PROWLARR_BACKFILL_SINCE_DATE: "2023-03-01" # optional
+    networks:
+      - media
+    ports:
+     - 9710:9710
+    command: ["prowlarr"]
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    hostname: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    volumes:
+      - ${MOVIES_DIR_LOCAL}:${MOVIES_DIR_RELATIVE}
+      - ${CONFIG_BASE_DIR}/radarr:/config
+      - ${DOWNLOADS_DIR_COMPLETE_LOCAL}:${DOWNLOADS_DIR_COMPLETE_RELATIVE}
+      - ${DOWNLOADS_DIR_INCOMPLETE_LOCAL}:${DOWNLOADS_DIR_INCOMPLETE_RELATIVE}
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  radarr-exporter:
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    container_name: radarr-exporter
+    hostname: radarr-exporter
+    environment:
+      PORT: 9708
+      URL: http://radarr:7878
+      APIKEY: ${RADARR_API_KEY}
+    networks:
+      - media
+    ports:
+      - 9708:9708
+    command: ["radarr"]
+    restart: unless-stopped
+
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    hostname: readarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    volumes:
+      - ${BOOKS_DIR_LOCAL}:${BOOKS_DIR_RELATIVE}
+      - ${CONFIG_BASE_DIR}/readarr:/config
+      - ${DOWNLOADS_DIR_COMPLETE_LOCAL}:${DOWNLOADS_DIR_COMPLETE_RELATIVE}
+      - ${DOWNLOADS_DIR_INCOMPLETE_LOCAL}:${DOWNLOADS_DIR_INCOMPLETE_RELATIVE}
+    ports:
+      - 8787:8787
+    restart: unless-stopped
+
+  readarr-exporter:
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    container_name: readarr-exporter
+    hostname: readarr-exporter
+    environment:
+      PORT: 9713
+      URL: http://readarr:8787
+      APIKEY: ${READARR_API_KEY}
+    networks:
+      - media
+    ports:
+      - 9713:9713
+    command: ["readarr"]
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    hostname: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    volumes:
+      - ${TV_DIR_LOCAL}:${TV_DIR_RELATIVE}
+      - ${CONFIG_BASE_DIR}/sonarr:/config
+      - ${DOWNLOADS_DIR_COMPLETE_LOCAL}:${DOWNLOADS_DIR_COMPLETE_RELATIVE}
+      - ${DOWNLOADS_DIR_INCOMPLETE_LOCAL}:${DOWNLOADS_DIR_INCOMPLETE_RELATIVE}
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  sonarr-exporter:
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    container_name: sonarr-exporter
+    hostname: sonarr-exporter
+    environment:
+      PORT: 9707
+      URL: http://sonarr:8989
+      APIKEY: ${SONARR_API_KEY}
+    networks:
+      - media
+    ports:
+      - 9707:9707
+    command: ["sonarr"]
+    restart: unless-stopped
+
+  # ||--------------------------------------------------------------------------------||
+  # ||                             Photo-and-Tool-Services                            ||
+  # ||--------------------------------------------------------------------------------||
+
+  photoprism:
+    image: photoprism/photoprism:latest
+    container_name: photoprism
+    hostname: photoprism
+    stop_grace_period: 10s
+    depends_on:
+      - photoprism_mariadb
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    environment:
+      PHOTOPRISM_ADMIN_PASSWORD: "testpassword"
+      PHOTOPRISM_ADMIN_USER: "admin"
+      PHOTOPRISM_AUTH_MODE: "password"
+      PHOTOPRISM_AUTH_INTERVAL: 10
+      PHOTOPRISM_LOGIN_LIMIT: 100
+      PHOTOPRISM_LOGIN_INTERVAL: 60
+      PHOTOPRISM_DATABASE_DRIVER: "mysql"
+      PHOTOPRISM_DATABASE_NAME: "photoprism-db"
+      PHOTOPRISM_DATABASE_PASSWORD: "testpassword"
+      PHOTOPRISM_DATABASE_SERVER: "photoprism-mariadb:3306"
+      PHOTOPRISM_DATABASE_USER: "admin"
+      PHOTOPRISM_DISABLE_TLS: false
+      PHOTOPRISM_DETECT_NSFW: false
+      PHOTOPRISM_DISABLE_CHOWN: false
+      PHOTOPRISM_DISABLE_CLASSIFICATION: false
+      PHOTOPRISM_DISABLE_FACES: false
+      PHOTOPRISM_DISABLE_RAW: false
+      PHOTOPRISM_DISABLE_SETTINGS: false
+      PHOTOPRISM_DISABLE_TENSORFLOW: false
+      PHOTOPRISM_DISABLE_VECTORS: false
+      PHOTOPRISM_DISABLE_WEBDAV: false
+      PHOTOPRISM_EXPERIMENTAL: false
+      PHOTOPRISM_FFMPEG_BITRATE: 64
+      PHOTOPRISM_FFMPEG_ENCODER: "software"
+      PHOTOPRISM_FFMPEG_SIZE: 3840
+      PHOTOPRISM_HTTP_COMPRESSION: "gzip"
+      PHOTOPRISM_INIT: "https tensorflow"
+      PHOTOPRISM_JPEG_QUALITY: 95
+      PHOTOPRISM_LOG_LEVEL: "info"
+      PHOTOPRISM_ORIGINALS_LIMIT: 500000
+      PHOTOPRISM_RAW_PRESETS: false
+      PHOTOPRISM_READONLY: false
+      PHOTOPRISM_SITE_AUTHOR: "Optimus Prime"
+      PHOTOPRISM_SITE_CAPTION: "Megatron must be stopped. No matter the cost."
+      PHOTOPRISM_SITE_DESCRIPTION: "There is a thin line between being a hero and being a memory."
+      PHOTOPRISM_SITE_TITLE: "PhotoPrism"
+      PHOTOPRISM_SITE_URL: "http://localhost:2342/"
+      PHOTOPRISM_UPLOAD_NSFW: true
+      PUID: 1000
+      PGID: 1000
+      UMASK: 002
+    networks:
+      - media
+    working_dir: /photoprism
+    volumes:
+      - /home/server/Photos:/photoprism/originals
+      - /home/server/docker/photoprism/storage:/photoprism/storage
+    ports:
+      - 2342:2342
+    restart: unless-stopped
+
+  photoprism_mariadb:
+    image: mariadb:11
+    container_name: photoprism_mariadb
+    hostname: photoprism-mariadb
+    stop_grace_period: 5s
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    environment:
+      MARIADB_AUTO_UPGRADE: 1
+      MARIADB_INITDB_SKIP_TZINFO: 1
+      MARIADB_DATABASE: photoprism-db
+      MARIADB_USER: admin
+      MARIADB_PASSWORD: testpassword
+      MARIADB_ROOT_PASSWORD: admintestpass
+    networks:
+      - media
+    volumes:
+      - /home/server/docker/photoprism/database:/var/lib/mysql
+    command: --innodb-buffer-pool-size=512M --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollba>
+    restart: unless-stopped
+
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - ${CONFIG_BASE_DIR}/homarr/configs:/app/data/configs
+      - ${CONFIG_BASE_DIR}/homarr/icons:/app/public/icons
+      - ${CONFIG_BASE_DIR}/homarr/data:/data
+    ports:
+      - 7575:7575
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+      - SECRET_ENCRYPTION_KEY=${HOMARRENCRYPTKEY}
+    networks:
+      - media
+
+  tdarr:
+    container_name: tdarr
+    image: ghcr.io/haveagitgat/tdarr:latest
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - 8265:8265 # webUI port
+      - 8266:8266 # server port
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+      - serverIP=0.0.0.0
+      - serverPort=8266
+      - webUIPort=8265
+      - internalNode=true
+      - inContainer=true
+      - ffmpegVersion=6
+      - nodeName=MyInternalNode
+    volumes:
+      - ${CONFIG_BASE_DIR}/tdarr/server:/app/server
+      - ${CONFIG_BASE_DIR}/tdarr/configs:/app/configs
+      - ${CONFIG_BASE_DIR}/tdarr/logs:/app/logs
+      - ${MOVIES_DIR_LOCAL}:/Tdarr/media
+      - ${CONFIG_BASE_DIR}/tdarr/transcode_cache:/temp
+    devices:
+      - /dev/fb0:/dev/fb0
+      - /dev/dri:/dev/dri
+    
+  tdarr-node:
+    container_name: tdarr-node
+    image: ghcr.io/haveagitgat/tdarr_node:latest
+    restart: unless-stopped
+    network_mode: service:tdarr
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+      - nodeName=MyExternalNode
+      - serverIP=0.0.0.0
+      - serverPort=8266
+      - inContainer=true
+      - ffmpegVersion=6
+    volumes:
+      - ${CONFIG_BASE_DIR}/tdarr/configs:/app/configs
+      - ${CONFIG_BASE_DIR}/tdarr/logs:/app/logs
+      - ${MOVIES_DIR_LOCAL}:/Tdarr/media
+      - ${CONFIG_BASE_DIR}/tdarr/transcode_cache:/temp
+    devices:
+      - /dev/fb0:/dev/fb0
+      - /dev/dri:/dev/dri
+
+#  paperless-ngx:
+#    image: lscr.io/linuxserver/paperless-ngx:latest
+#    container_name: paperless-ngx
+#    hostname: paperless-ngx
+#    environment:
+#      - PGID=${PGID}
+#      - PUID=${PUID}
+#      - TZ=${TZ}
+#      - UMASK=${UMASK}
+#      - REDIS_URL=
+#    networks:
+#      - media
+#    volumes:
+#      - ${CONFIG_BASE_DIR}/paperless-ngx:/config
+#      - ${DOCUMENTS_DIR_LOCAL}/paperless-ngx:/data
+#      - ${DOCUMENTS_DIR_LOCAL}:/documents
+#    ports:
+#      - 8001:8008
+#    restart: unless-stopped
+
+#  searxng:
+#    image: searxng/searxng:latest
+#    container_name: searxng
+#    hostname: searxng
+#    environment:
+#      - PGID=${PGID}
+#      - PUID=${PUID}
+#      - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME:-localhost}/
+#      - TZ=${TZ}
+#      - UMASK=${UMASK}
+#    cap_drop:
+#      - ALL
+#    cap_add:
+#      - CHOWN
+#      - SETGID
+#      - SETUID
+#    logging:
+#      driver: json-file
+#      options:
+#        max-size: 1m
+#        max-file: 1
+#    networks:
+#      - media
+#    volumes:
+#      - ${CONFIG_BASE_DIR}/searxng:/etc/searxng:rw
+#    ports:
+#      - 8082:8084
+#    restart: unless-stopped
+
+  syncthing:
+    image: lscr.io/linuxserver/syncthing:latest
+    container_name: syncthing
+    hostname: syncthing
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    network_mode: host
+    volumes:
+      - ${CONFIG_BASE_DIR}/syncthing:/config
+      - ${SYNCTHING_MOUNT_DIR_1_LOCAL}:${SYNCTHING_MOUNT_DIR_1_RELATIVE}
+      - ${SYNCTHING_MOUNT_DIR_2_LOCAL}:${SYNCTHING_MOUNT_DIR_2_RELATIVE}
+    restart: unless-stopped
+
+#  tailscale:
+#    image: tailscale/tailscale:latest
+#    container_name: tailscale
+#    hostname: ${TAILSCALE_HOSTNAME}
+#    cap_add:
+#      - NET_ADMIN
+#      - NET_RAW
+#      - SYS_MODULE
+#    privileged: true
+#    environment:
+#      - PGID=${PGID}
+#      - PUID=${PUID}
+#      - TAILSCALE_HOSTNAME=${TAILSCALE_HOSTNAME}
+#      - TAILSCALE_STATE_ARG=${TAILSCALE_STATE_ARG}
+#      - TS_ACCEPT_DNS=${TS_ACCEPT_DNS}
+#      - TS_AUTHKEY=${TS_AUTHKEY}
+#      - TS_DEST_IP=${TS_DEST_IP}
+#      - TS_EXTRA_ARGS=${TS_EXTRA_ARGS}
+#      - TS_KUBE_SECRET=${TS_KUBE_SECRET}
+#      - TS_OUTBOUND_HTTP_PROXY_LISTEN=${TS_OUTBOUND_HTTP_PROXY_LISTEN}
+#      - TS_ROUTES=${TS_ROUTES}
+#      - TS_SOCKET=${TS_SOCKET}
+#      - TS_SOCKS5_SERVER=${TS_SOCKS5_SERVER}
+#      - TS_STATE_DIR=${TS_STATE_DIR}
+#      - TS_TAILSCALED_EXTRA_ARGS=${TS_TAILSCALED_EXTRA_ARGS}
+#      - TS_USERSPACE=${TS_USERSPACE}
+#      - TZ=${TZ}
+#      - UMASK=${UMASK}
+#    network_mode: host
+#    volumes:
+#      - ${CONFIG_BASE_DIR}/tailscale/varlib:/var/lib
+#      - /dev/net/tun:/dev/net/tun
+#      - ${CONFIG_BASE_DIR}/tailscale/tmp:/tmp
+#    restart: unless-stopped
+
+#  wallabag:
+#    image: wallabag/wallabag
+#    container_name: wallabag
+#    hostname: wallabag
+#    depends_on:
+#      - wallabag_db
+#      - wallabag_redis
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=${WALLABAG_DATABASE_ROOT_PASSWORD}
+#      - SYMFONY__ENV__DATABASE_DRIVER=pdo_mysql
+#      - SYMFONY__ENV__DATABASE_HOST=wallabag-db
+#      - SYMFONY__ENV__DATABASE_PORT=3306
+#      - SYMFONY__ENV__DATABASE_NAME=${WALLABAG_DATABASE_NAME}
+#      - SYMFONY__ENV__DATABASE_USER=${WALLABAG_DATABASE_USER}
+#      - SYMFONY__ENV__DATABASE_PASSWORD=${WALLABAG_DATABASE_PASSWORD}
+#      - SYMFONY__ENV__DATABASE_CHARSET=utf8mb4
+#      - SYMFONY__ENV__DATABASE_TABLE_PREFIX="wallabag_"
+#      - SYMFONY__ENV__MAILER_DSN=smtp://127.0.0.1
+#      - SYMFONY__ENV__FROM_EMAIL=${WALLABAG_FROM_EMAIL}
+#      - SYMFONY__ENV__DOMAIN_NAME=${WALLABAG_DOMAIN_NAME}
+#      - SYMFONY__ENV__SERVER_NAME=${WALLABAG_SERVER_NAME:-wallabag}
+#    networks:
+#      - media
+#    ports:
+#      - 8092:80
+#    volumes:
+#      - ${CONFIG_BASE_DIR}/wallabag/images:/var/www/wallabag/web/assets/images
+#    healthcheck:
+#      test: ["CMD", "wget" ,"--no-verbose", "--tries=1", "--spider", "http://localhost"]
+#      interval: 1m
+#      timeout: 3s
+
+#  wallabag_db:
+#    image: mariadb
+#    container_name: wallabag_db
+#    hostname: wallabag-db
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=${WALLABAG_DATABASE_ROOT_PASSWORD}
+#    networks:
+#      - media
+#    volumes:
+#      - ${CONFIG_BASE_DIR}/wallabag/database:/var/lib/mysql
+#    healthcheck:
+#      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+#      interval: 20s
+#      timeout: 3s
+
+#  wallabag_redis:
+#    image: redis:alpine
+#    container_name: wallabag_redis
+#    hostname: wallabag-redis
+#    healthcheck:
+#      test: ["CMD", "redis-cli", "ping"]
+#      interval: 20s
+#      timeout: 3s
+
+# ||--------------------------------------------------------------------------------||
+# ||                                  Home Assistant                                ||
+# ||--------------------------------------------------------------------------------||
+
+  homeassistant:
+    container_name: homeassistant
+    hostname: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    environment:
+      - PGID=${HOMEASSISTANT_PGID}
+      - PUID=${HOMEASSISTANT_PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    privileged: true
+    network_mode: host
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+      - /dev/ttyUSB1:/dev/ttyUSB1
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      # TODO: THIS IS BREAKING BLUETOOTH SUPPORT (RPI4/remote-server - DO WE EVEN NEED IT?)
+      # - /run/dbus:/run/dbus:ro
+      - ${HOMEASSISTANT_DATA_DIR_1_LOCAL}:${HOMEASSISTANT_DATA_DIR_1_RELATIVE}
+      - ${HOMEASSISTANT_DATA_DIR_2_LOCAL}:${HOMEASSISTANT_DATA_DIR_2_RELATIVE}
+      - ${HOMEASSISTANT_DATA_DIR_3_LOCAL}:${HOMEASSISTANT_DATA_DIR_3_RELATIVE}
+      - ${HOMEASSISTANT_CONFIG_BASE_DIR}/homeassistant:/config
+    restart: unless-stopped
+
+# ||--------------------------------------------------------------------------------||
+# ||                                  Kometa                                        ||
+# ||--------------------------------------------------------------------------------||
+
+
+#  kometa:
+#    image: kometateam/kometa:latest
+#    container_name: kometa
+#    hostname: kometa
+#    environment:
+#      - PGID=${PGID}
+#      - KOMETA_PLEX_TOKEN=${KOMETA_PLEX_TOKEN}
+#      - KOMETA_PLEX_URL=${KOMETA_PLEX_URL}
+#      - KOMETA_RUN=True
+#      - KOMETA_TIME=
+#      - PUID=${PUID}
+#      - UMASK=${UMASK}
+#    networks:
+#      - media
+#    volumes:
+#      - ${CONFIG_BASE_DIR}/kometa:/config
+#    restart: "no"
+
+# ||--------------------------------------------------------------------------------||
+# ||                                Operational Tools                               ||
+# ||--------------------------------------------------------------------------------||
+
+
+#  alertmanager:
+#    container_name: alertmanager
+#    hostname: alertmanager
+#    image: prom/alertmanager:v0.27.0
+#    user: 1000:1000
+#    volumes:
+#      - ${CONFIG_BASE_DIR}/prometheus/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+#      - ${CONFIG_BASE_DIR}/prometheus/config/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+#    ports:
+#      - 9093:9093
+#    restart: always
+  
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    hostname: cadvisor
+    networks:
+      - media
+    user: 1000:1000
+    mem_limit: 256m
+    mem_reservation: 64m
+    cpu_shares: 512
+    security_opt:
+      - no-new-privileges=true
+    # read_only: true
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command:
+      - '--docker_only=true'
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana-enterprise:latest
+    container_name: grafana
+    hostname: grafana
+    depends_on:
+      - grafana_postgres
+    user: 0:0
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+      - GF_DATABASE_TYPE=postgres
+      - GF_DATABASE_HOST=grafana-postgres
+      - GF_DATABASE_NAME=${GRAFANA_DATABASE_NAME}
+      - GF_DATABASE_USER=${GRAFANA_DATABASE_USER}
+      - GF_DATABASE_PASSWORD=${GRAFANA_DATABASE_PASSWORD}
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource,natel-discrete-panel,grafana-piechart-panel
+      # - GF_INSTALL_PLUGINS=grafana-clock-panel
+      # - GF_SERVER_ROOT_URL=http://my.grafana.server/
+    networks:
+      - media
+    mem_limit: 512m
+    cpu_shares: 512
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:3000/api/health
+    volumes:
+      - ${CONFIG_BASE_DIR}/grafana/storage:/var/lib/grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  grafana_postgres:
+    image: postgres:16-alpine
+    container_name: grafana_postgres
+    hostname: grafana-postgres
+    security_opt:
+      - no-new-privileges=true
+    user: 0:0
+    cap_drop:  # Remove unnecessary capabilities
+      - ALL
+    shm_size: 128mb
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+      - POSTGRES_DB=${GRAFANA_DATABASE_NAME}
+      - POSTGRES_USER=${GRAFANA_DATABASE_USER}
+      - POSTGRES_PASSWORD=${GRAFANA_DATABASE_PASSWORD}
+    networks:
+      - media
+    volumes:
+      - ${CONFIG_BASE_DIR}/grafana/database:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  iperf3:
+    image: networkstatic/iperf3
+    container_name: iperf3
+    hostname: iperf3
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    user: 1000:1000
+    networks:
+      - media
+    ports:
+      - 5201:5201
+    command: '--server'
+    restart: unless-stopped
+
+  node_exporter:
+    image: prom/node-exporter:latest
+    container_name: node_exporter
+    hostname: node-exporter
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    mem_limit: 256m
+    mem_reservation: 64m
+    cpu_shares: 512
+    security_opt:
+      - no-new-privileges=true
+    # read_only: true
+    user: 1000:1000
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:9100/
+    command:
+      - --collector.disable-defaults
+      - --collector.stat
+      - --collector.time
+      - --collector.cpu
+      - --collector.loadavg
+      - --collector.hwmon
+      - --collector.meminfo
+      - --collector.diskstats
+    restart: unless-stopped
+
+  ofelia:
+    image: mcuadros/ofelia:latest
+    container_name: ofelia
+    hostname: ofelia
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${CONFIG_BASE_DIR}/ofelia/jobs.ini:/etc/ofelia/config.ini
+    restart: unless-stopped
+
+  # prometheus:
+  #   image: prom/prometheus:latest
+  #   container_name: prometheus
+  #   hostname: prometheus
+  #   # TODO: This is such a stupid hack
+  #   user: root
+  #   depends_on:
+  #   - cadvisor
+  #   environment:
+  #     - TZ=${TZ}
+  #     - UMASK=${UMASK}
+  #   networks:
+  #     - media
+  #   volumes:
+  #     - ${CONFIG_BASE_DIR}/prometheus/config:/etc/prometheus
+  #     - ${CONFIG_BASE_DIR}/prometheus/data:/prometheus
+  #   ports:
+  #     - 9090:9090
+  #   command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yaml
+  #   restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    hostname: prometheus
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    mem_limit: 1g
+    cpu_shares: 768
+    security_opt:
+      - no-new-privileges=true
+    user: 0:0
+    cap_drop:  # Remove unnecessary capabilities
+      - ALL
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:9090/ || exit 1
+    volumes:
+      - ${CONFIG_BASE_DIR}/prometheus/data:/prometheus:rw
+      - ${CONFIG_BASE_DIR}/prometheus/config:/etc/prometheus:ro
+    ports:
+      - 9090:9090
+    command:
+      - '--storage.tsdb.retention.time=60d'
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+    restart: unless-stopped
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    hostname: redis
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    user: 1000:1000
+    ports:
+    - 6379:6379
+
+  snmp-exporter:
+    image: prom/snmp-exporter:latest
+    container_name: snmp_exporter
+    hostname: snmp-exporter
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    mem_limit: 256m
+    mem_reservation: 64m
+    cpu_shares: 512
+    security_opt:
+      - no-new-privileges:true
+    # read_only: true
+    user: 1000:1000
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:9116/ || exit 1
+    volumes:
+      - ${CONFIG_BASE_DIR}/prometheus/snmp/snmp.yml:/etc/snmp_exporter/snmp.yml:ro
+    command:
+      - '--config.file=/etc/snmp_exporter/snmp.yml'
+    restart: unless-stopped
+
+  speedtest_exporter:
+    image: ghcr.io/danopstech/speedtest_exporter:latest
+    container_name: speedtest_exporter
+    hostname: speedtest-exporter
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    security_opt:
+      - no-new-privileges=true
+    # read_only: true
+    user: 1000:1000
+    restart: unless-stopped
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    hostname: watchtower
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_HTTP_API_TOKEN={$WATCHTOWER_HTTP_API_TOKEN}
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+      - WATCHTOWER_INCLUDE_STOPPED=true
+      - WATCHTOWER_LABEL_ENABLE=false
+      - WATCHTOWER_NOTIFICATION_REPORT=true
+      - WATCHTOWER_NOTIFICATION_URL=${WATCHTOWER_NOTIFICATION_URL}
+      - WATCHTOWER_POLL_INTERVAL=${WATCHTOWER_POLL_INTERVAL}
+      - WATCHTOWER_REMOVE_VOLUMES=true
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - media
+    ports:
+      - 8484:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+
+# ||--------------------------------------------------------------------------------||
+# ||                                Nextcloud                                       ||
+# ||--------------------------------------------------------------------------------||
+  nextcloud-aio:
+    image: nextcloud/all-in-one:latest
+    container_name: nextcloud-aio-mastercontainer
+    restart: unless-stopped
+    init: true
+    networks:
+      - media
+    user: "0:0"  # Required for Docker socket access
+    security_opt:
+      - no-new-privileges:true  # Prevent privilege escalation
+    cap_drop:  # Remove unnecessary capabilities
+      - ALL
+    ports:
+      - "85:80"
+      - "8085:8080"
+      - "8443:8443"
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+
+# ||--------------------------------------------------------------------------------||
+# ||                                Flaresolverr                                    ||
+# ||--------------------------------------------------------------------------------||  
+  flaresolverr:
+    image: ysx88/flaresolverr
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=Europe/London
+    ports:
+      - "${PORT:-8191}:8191"
+    restart: unless-stopped
+
+volumes:
+  nextcloud_aio_mastercontainer:
+
+networks:
+  media:  # Keep existing network config
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
+      com.docker.network.bridge.enable_ip_masquerade: "true"
+      com.docker.network.bridge.host_binding_ipv4: "0.0.0.0"
+      com.docker.network.bridge.name: "media"
+      com.docker.network.driver.mtu: "1500"
+    ipam:
+      config:
+        - subnet: ${SUBNET}
+          gateway: ${GATEWAY_IP}
+          ip_range: ${IP_RANGE}
