@@ -148,7 +148,7 @@ The setup process has been simplified with a consolidated docker-compose.yml fil
     ```
     Remember to go back to the root project's folder with:
     ```shell
-    cd ../
+     cd ../
     ```
 
 5. Deploy all services at once with:
