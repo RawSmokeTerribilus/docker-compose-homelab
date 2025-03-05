@@ -147,7 +147,7 @@ The setup process has been simplified with a consolidated docker-compose.yml fil
     docker compose --file docker-compose-portainer.yaml --env-file ../environment_variables.env up --detach
     ```
     Remember to go back to the root project's folder with:
-    ```shell
+    ```
      cd ../
     ```
 
