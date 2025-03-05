@@ -128,10 +128,10 @@ The setup process has been simplified with a consolidated docker-compose.yml fil
       media
     ```
 
-3. Copy the `environment_variables.env.example` file to `.env` and update the variables according to your configuration:
+3. Copy the `environment_variables.env.example` file to `environment_variables.env` and update the variables according to your configuration:
    ```shell
-   cp environment_variables.env.example .env
-   nano .env  # Or use your preferred text editor
+   cp environment_variables.env.example environment_variables.env
+   nano environment_variables.env  # Or use your preferred text editor
    ```
    
    **IMPORTANT NOTE:** You don't need to complete all values at once. Fill in the essential ones to start and update others as you set up services. See the [Environment Variables](#environment-variables) section for details.
@@ -151,7 +151,7 @@ The setup process has been simplified with a consolidated docker-compose.yml fil
 
 5. Deploy all services at once with:
    ```shell
-   docker-compose up -d
+   docker-compose --env-file environment_variables.env up -d
    ```
    
    Or deploy specific service groups by using labels:
