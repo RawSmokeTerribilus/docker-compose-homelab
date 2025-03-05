@@ -86,7 +86,9 @@ Below is a list of all the services available in the consolidated docker-compose
 ### Operations
 
 - [cAdvisor](https://github.com/google/cadvisor): A tool for monitoring Docker containers, images, system resources, etc.
-- [Grafana](https://github.com/grafana/grafana): A tool for visualizing metrics a### Media Players
+- [Grafana](https://github.com/grafana/grafana): A tool for visualizing metrics a
+
+### Media Players
 
 - [Jellyfin](https://github.com/jellyfin/jellyfin): A free software media system to organize, manage, and stream media.
 - [Jellyseerr](https://github.com/Fallenbagel/jellyseerr): Request management and media discovery tool for Jellyfin.
