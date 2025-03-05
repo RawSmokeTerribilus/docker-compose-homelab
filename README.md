@@ -23,7 +23,7 @@
 This respository contains the Docker compose files for standing up an entire Servarr
 stack along with a other supporting tools and services best suited for an at-home
 NAS or media center, of course based on Linux and using cloudflare tunnels to expose
-your services  (if you were wondering why there isn't a reverso proxy in the stack)
+your services  (if you were wondering why there isn't a reverse proxy in the stack)
 
 **Table of contents:**
 - [docker-compose-media-center](#docker-compose-media-center)
