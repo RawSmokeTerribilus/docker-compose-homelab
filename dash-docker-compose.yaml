@@ -1,0 +1,16 @@
+services:
+  dashdot:
+    image: mauricenino/dashdot:latest
+    container_name: dashdot
+    restart: unless-stopped
+    ports:
+      - '3001:3001'
+    volumes:
+      - /:/host:ro # Monta el sistema raíz en modo de solo lectura
+      - /run:/run # para solucionar los problemas de la red
+    privileged: true # mantiene los privilegios elevados.
+    environment:
+      DASHDOT_ENABLE_CPU_TEMPS: 'true'
+      DASHDOT_WIDGET_LIST: 'os,cpu,storage,ram,network'
+      DASHDOT_ENABLE_GPU_TEMPS: 'true' # permite ver la temperatura de la GPU
+      DASHDOT_ENABLE_NETWORK: 'true' # Permite tener acceso a la red.
