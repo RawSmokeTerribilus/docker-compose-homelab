@@ -1,0 +1,14 @@
+
+services:
+  pinchflat:
+    image: ghcr.io/kieraneglin/pinchflat:latest
+    environment:
+      # Set the timezone to your local timezone
+      - TZ=Europe/Madrid
+      - BASIC_AUTH_USERNAME=     #set your own
+      - BASIC_AUTH_PASSWORD=     #set your own
+    ports:
+      - '8945:8945'
+    volumes:
+      - /home/rawserver/.config:/config   #change
+      - /run/media/rawserver/External HDD/YOUTUBE:/downloads  #change
