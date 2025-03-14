@@ -117,7 +117,6 @@ Below is a list of all the services available in the consolidated docker-compose
 ### Home Automation
 
 - [Home Assistant](https://github.com/home-assistant/core): Open-source home automation platform running on Python.
-- [Node-RED](https://github.com/node-red/node-red): Flow-based programming for the Internet of Things.
 - [Zigbee2MQTT](https://github.com/Koenkk/zigbee2mqtt): Zigbee to MQTT bridge, get rid of proprietary Zigbee bridges.
 
 ### Ebook Services
@@ -546,6 +545,7 @@ Now personal notes to myself on some of that which remains:
 
 ### TODO List
 - [ ] Add Manyfold
+- [ ] Add Node-Red https://github.com/node-red/node-red
 - [ ] Add Gluetun instructions
 - [ ] Fix Mylar3 error 500
 - [ ] Fix Homeassistant errors
