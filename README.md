@@ -93,10 +93,10 @@ Below is a list of all the services available in the consolidated docker-compose
 ### Download Clients
 
 - [Deluge](https://github.com/deluge-torrent/deluge): Lightweight BitTorrent client.
-- [DelugeVPN](https://hub.docker.com/r/binhex/arch-delugevpn/): Deluge with built-in VPN support.
+- ~~[DelugeVPN](https://hub.docker.com/r/binhex/arch-delugevpn/)~~: Deluge with built-in VPN support.
 - [FlareSolverr](https://github.com/FlareSolverr/FlareSolverr): Proxy server to bypass Cloudflare protection.
-- [NZBGet](https://github.com/nzbget/nzbget): Efficient Usenet downloader.
-- [NZBGetVPN](https://hub.docker.com/r/jarlave/nzbgetvpn): NZBGet with built-in VPN support.
+- ~~[NZBGet](https://github.com/nzbget/nzbget)~~: Efficient Usenet downloader.
+- ~~[NZBGetVPN](https://hub.docker.com/r/jarlave/nzbgetvpn)~~: NZBGet with built-in VPN support.
 - [qBittorrent](https://github.com/qbittorrent/qBittorrent): Feature-rich BitTorrent client. (avoid firefox for first login)
 - [Unpackerr](https://github.com/Unpackerr/unpackerr): Extracts and processes media files after download.
 - [Pinchflat](https://github.com/kieraneglin/pinchflat): Web archive and download manager with collection capabilities.
@@ -105,14 +105,14 @@ Below is a list of all the services available in the consolidated docker-compose
 
 - [Jellyfin](https://github.com/jellyfin/jellyfin): A free software media system to organize, manage, and stream media.
 - [Jellyseerr](https://github.com/Fallenbagel/jellyseerr): Request management and media discovery tool for Jellyfin.
-- [Overseerr](https://github.com/sct/overseerr): Request management and media discovery tool for Plex.
-- [Plex](https://github.com/plexinc/plex-media-server): A client-server media player system and software suite.
-- [Tautulli](https://github.com/Tautulli/Tautulli): A Python-based monitoring and tracking tool for Plex Media Server.
+- ~~[Overseerr](https://github.com/sct/overseerr)~~: Request management and media discovery tool for Plex.
+- ~~[Plex](https://github.com/plexinc/plex-media-server)~~: A client-server media player system and software suite.
+- ~~[Tautulli](https://github.com/Tautulli/Tautulli)~~: A Python-based monitoring and tracking tool for Plex Media Server.
 
 ### Media Management
 
 - [Tdarr](https://github.com/HaveAGitGat/Tdarr): Audio/Video library analytics and transcode automation.
-- [Kometa](https://github.com/kometapp/kometa): Media management and organization tool.
+- ~~[Kometa](https://github.com/kometapp/kometa)~~: Media management and organization tool.
 
 ### Home Automation
 
@@ -130,6 +130,10 @@ Below is a list of all the services available in the consolidated docker-compose
 - [Nextcloud AIO](https://github.com/nextcloud/all-in-one): Self-hosted productivity platform
 - [FlareSolverr](https://github.com/FlareSolverr/FlareSolverr): Proxy server to bypass Cloudflare and other anti-bot protections
 - [Pinchflat](https://github.com/kieraneglin/pinchflat): Web archive and download manager
+- ~~[Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx)~~: Document management system
+- ~~[SearXNG](https://github.com/searxng/searxng)~~: Privacy-respecting metasearch engine
+- ~~[Tailscale](https://github.com/tailscale/tailscale)~~: Zero config VPN
+- ~~[Wallabag](https://github.com/wallabag/wallabag)~~: Self-hosted read-it-later app
 
 ## Installation and Setup
 
@@ -367,14 +371,14 @@ No port conflicts have been detected in the default configuration.
   _relative_ to the container (i.e. **not** the actual location of the
   files on disk e.g. `/mnt_tmp` => `${HOMEASSISTANT_DATA_DIR_3_LOCAL}` e.g.
   `/mnt_tmp` => `/mnt`)
-- `IMMICH_DB_DATABASE_NAME`: The name for the Immich database
-- `IMMICH_DB_PASSWORD`: A password for the Immich database
-- `IMMICH_DB_USERNAME`: A username for the Immich database
-- `IMMICH_VERSION`: The version of Immich to use (default: `release`)
+- ~~`IMMICH_DB_DATABASE_NAME`~~: The name for the Immich database
+- ~~`IMMICH_DB_PASSWORD`~~: A password for the Immich database
+- ~~`IMMICH_DB_USERNAME`~~: A username for the Immich database
+- ~~`IMMICH_VERSION`~~: The version of Immich to use (default: `release`)
 - `IP_RANGE`: IP range for the Docker Compose subnet
-- `KOMETA_PLEX_TOKEN`: The Plex claim ID from above but without the `claim-`
+- ~~`KOMETA_PLEX_TOKEN`~~: The Plex claim ID from above but without the `claim-`
   prefix
-- `KOMETA_PLEX_URL`: The internal Docker URL for the plex container for use by
+- ~~`KOMETA_PLEX_URL`~~: The internal Docker URL for the plex container for use by
   Kometa (previously: Plex Meta Manager) (e.g. (and probably should not change)
   `http://plex:32400`)
 - `LAN_NETWORK`: Private IP network the Docker Compose subnet is attached to on
@@ -408,8 +412,8 @@ No port conflicts have been detected in the default configuration.
 - `APACHE_PORT`: Port for Apache server
 - `COLLABORA_SECCOMP_DISABLED`: Disable seccomp for Collabora
 - `FULLTEXTSEARCH_JAVA_OPTIONS`: Java options for full-text search
-- ~~`NZBGET_WEBUI_PASSWORD`: NZBGet Password for the Web UI~~
-- ~~`NZBGET_WEBUI_USERNAME=admin`: NZBGet Username for the Web UI~~
+- ~~`NZBGET_WEBUI_PASSWORD`~~: NZBGet Password for the Web UI
+- ~~`NZBGET_WEBUI_USERNAME=admin`~~: NZBGet Username for the Web UI
 - `OPENVPN_CONFIG`: Transmission OpenVPN configuration file(s) to use (e.g.
   `us_west.ovpn` => `us_west` or to use more than one file:
   `us_west,us_california,us_east`)
@@ -438,7 +442,7 @@ No port conflicts have been detected in the default configuration.
 - `PINCHFLAT_PASSWORD`: Password for Pinchflat web interface
 - `PINCHFLAT_CONFIG_DIR`: Directory for Pinchflat configuration
 - `PINCHFLAT_DOWNLOADS_DIR`: Directory for Pinchflat downloads
-- `PLEX_CLAIM`: The Plex claim ID received from <https://plex.tv/claim> when
+- ~~`PLEX_CLAIM`~~: The Plex claim ID received from <https://plex.tv/claim> when
   first starting the Plex service
 - `PORTAINER_PASSWORD`: An http password encoded string (see this tool:
   [HTPasswd Generator](https://www.web2generators.com/apache-tools/htpasswd-generator))
@@ -448,13 +452,13 @@ No port conflicts have been detected in the default configuration.
 - `PROWLARR_API_KEY`: The API key for Prowlarr
 - `PUID`: The user ID for the running process in the container environment
   (e.g. `1000`)
-- ~~`RANA_ARGUMENTS`: Arguments to pass in `rana` on execution to
-  find a prefixed sub-string(s) (e.g. "-n=j0hnwyles,j0hnwyl3s -c 4")~~
+- ~~`RANA_ARGUMENTS`~~: Arguments to pass in `rana` on execution to
+  find a prefixed sub-string(s) (e.g. "-n=j0hnwyles,j0hnwyl3s -c 4")
 - `READARR_API_KEY`: The API key for Readarr
 - `RADARR_API_KEY`: The API key for Radarr
 - `SABNZBD_API_KEY`: The API key for Sabnzbd
 - `SERVER_COUNTRIES`: Gluetun VPN killswitch setting for the regions to use
-- `SEARXNG_HOSTNAME`: Hostname to reference for SearXNG internally
+- ~~`SEARXNG_HOSTNAME`~~: Hostname to reference for SearXNG internally
 - `SONARR_API_KEY`: The API key for Sonarr
 - `SUBNET`: The subnet for the Docker Compose environment (e.g. `172.16.0.0/16`)
 - `SYNCTHING_MOUNT_DIR_1_LOCAL`: The directory of a path locally that you would
@@ -472,29 +476,29 @@ No port conflicts have been detected in the default configuration.
   disk e.g. `/some_other_directory` => `${SYNCTHING_MOUNT_DIR_1_LOCAL}` e.g.
   `/some_other_directory` =>
   `/volume1/some_other_directory`)
-- `TAILSCALE_HOSTNAME`: The hostname of this tailscale instance (e.g.
+- ~~`TAILSCALE_HOSTNAME`~~: The hostname of this tailscale instance (e.g.
   `my-nas-server`)
-- `TAILSCALE_STATE_ARG`: The Tailscale argument for the state argument variable
+- ~~`TAILSCALE_STATE_ARG`~~: The Tailscale argument for the state argument variable
   (e.g. `"mem:"`)
 - `TRANSMISSION_PASS`: The default password to set for Tranmission account
   (default: `admin`)
 - `TRANSMISSION_USER`: The account for access to Transmission (default: `admin`)
-- `TS_ACCEPT_DNS`: Tailscale setting for DNS entries (default: `true`)
-- `TS_AUTH_KEY`: The Tailscale authorization key from
+- ~~`TS_ACCEPT_DNS`~~: Tailscale setting for DNS entries (default: `true`)
+- ~~`TS_AUTH_KEY`~~: The Tailscale authorization key from
   [Tailscale.com > Settings > Personal Settings > Keys](https://login.tailscale.com/admin/settings/keys)
-- `TS_DEST_IP`: Tailscale setting for target IP (default: null)
-- `TS_EXTRA_ARGS`: Extra arguments to pass to `tailscale up` (Recommended:
+- ~~`TS_DEST_IP`~~: Tailscale setting for target IP (default: null)
+- ~~`TS_EXTRA_ARGS`~~: Extra arguments to pass to `tailscale up` (Recommended:
   `="--reset --advertise-exit-node --ssh"`)
-- `TS_KUBE_SECRET`: Kubernetes secret if you are in a K8S cluster
-- `TS_OUTBOUND_HTTP_PROXY_LISTEN`: Proxy settings if you have outbound proxy
+- ~~`TS_KUBE_SECRET`~~: Kubernetes secret if you are in a K8S cluster
+- ~~`TS_OUTBOUND_HTTP_PROXY_LISTEN`~~: Proxy settings if you have outbound proxy
   settings (default: null)
-- `TS_ROUTES`: Tailscale routing (default: null)
-- `TS_SOCKET`: Socket file for `tailscaled` (default: `/tmp/tailscaled.sock`)
-- `TS_TAILSCALED_EXTRA_ARGS`: Extra arguments to pass to start of `tailscaled`
+- ~~`TS_ROUTES`~~: Tailscale routing (default: null)
+- ~~`TS_SOCKET`~~: Socket file for `tailscaled` (default: `/tmp/tailscaled.sock`)
+- ~~`TS_TAILSCALED_EXTRA_ARGS`~~: Extra arguments to pass to start of `tailscaled`
   (default: null)
-- `TS_USERSPACE`: Userspace setting for Tailscale (default: null)
-- `TS_SOCKS5_SERVER`: SOCKS5 settings (default: null)
-- `TS_STATE_DIR`: Directory for tailscale storage state directory (default:
+- ~~`TS_USERSPACE`~~: Userspace setting for Tailscale (default: null)
+- ~~`TS_SOCKS5_SERVER`~~: SOCKS5 settings (default: null)
+- ~~`TS_STATE_DIR`~~: Directory for tailscale storage state directory (default:
   `/var/lib/tailscale`)
 - `TV_DIR_LOCAL`: The directory to keep TV show files that are organized
   locally on disk (i.e. `/volume1/tv`)
@@ -505,8 +509,8 @@ No port conflicts have been detected in the default configuration.
 - `UN_RADARR_0_API_KEY`: Radarr API key
 - `UN_READARR_0_API_KEY`: Readarr API key
 - `UN_SONARR_0_API_KEY`: Sonarr API key
-- ~~`VANITY_AGE_ARGUMENTS`: A RegEx that you would like to find at the beginning
-  of a `age` public key (e.g. "\d+j0hn\d?wyles.*")~~
+- ~~`VANITY_AGE_ARGUMENTS`~~: A RegEx that you would like to find at the beginning
+  of a `age` public key (e.g. "\d+j0hn\d?wyles.*")
 - `VPN_PASS`: VPN password for your VPN provider
 - `VPN_SERVICE_PROVIDER`: Gluetun VPN service provider (e.g.
   `private internet access` for Private Internet Access VPN, `nordvpn` for
@@ -517,13 +521,13 @@ No port conflicts have been detected in the default configuration.
   notifications
 - `WATCHTOWER_POLL_INTERVAL`: Poll interval for Watchtower to check for images
 - `VPN_USER`: VPN username for your VPN provider
-- `WALLABAG_DATABASE_NAME`: The name for the Wallabag database
-- `WALLABAG_DATABASE_PASSWORD`: The password for the Wallabag database
-- `WALLABAG_DATABASE_ROOT_PASSWORD`: The root password for the Wallabag database
-- `WALLABAG_DATABASE_USER`: The user for the Wallabag database
-- `WALLABAG_DOMAIN_NAME`: The domain name for the Wallabag service
-- `WALLABAG_FROM_EMAIL`: The email address to use for the "from" field in emails
-- `WALLABAG_SERVER_NAME`: The server name for the Wallabag service
+- ~~`WALLABAG_DATABASE_NAME`~~: The name for the Wallabag database
+- ~~`WALLABAG_DATABASE_PASSWORD`~~: The password for the Wallabag database
+- ~~`WALLABAG_DATABASE_ROOT_PASSWORD`~~: The root password for the Wallabag database
+- ~~`WALLABAG_DATABASE_USER`~~: The user for the Wallabag database
+- ~~`WALLABAG_DOMAIN_NAME`~~: The domain name for the Wallabag service
+- ~~`WALLABAG_FROM_EMAIL`~~: The email address to use for the "from" field in emails
+- ~~`WALLABAG_SERVER_NAME`~~: The server name for the Wallabag service
 - `WATCHTOWER_NOTIFICATION_URL`: (optional) Watchtower Webhook Notification URL
 - `WATCHTOWER_POLL_INTERVAL`: Interval for Watchtower to check for new container
   images (e.g. 21600 ("6 hours"))
