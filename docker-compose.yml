@@ -23,8 +23,8 @@ services:
       - ${MOVIES_DIR_LOCAL}:${MOVIES_DIR_RELATIVE}
       - ${TV_DIR_LOCAL}:${TV_DIR_RELATIVE}
     ports:
-      - 8097:8096
-      - 8921:8920
+      - ${EMBY_PORT_WEB}:8096
+      - ${EMBY_PORT_HTTPS}:8920
     restart: unless-stopped
 
   jellyfin:
@@ -45,10 +45,10 @@ services:
       - ${MUSIC_DIR_LOCAL}:${MUSIC_DIR_RELATIVE}
       - ${TV_DIR_LOCAL}:${TV_DIR_RELATIVE}
     ports:
-      - 1900:1900/udp
-      - 7359:7359/udp
-      - 8096:8096
-      - 8920:8920
+      - ${JELLYFIN_PORT_SERVICE_DISC1}:1900/udp
+      - ${JELLYFIN_PORT_SERVICE_DISC2}:7359/udp
+      - ${JELLYFIN_PORT_WEB}:8096
+      - ${JELLYFIN_PORT_HTTPS}:8920
     restart: unless-stopped
 
   jellyseerr:
@@ -66,7 +66,7 @@ services:
     volumes:
       - ${CONFIG_BASE_DIR}/jellyseerr:/app/config
     ports:
-      - 5056:5055
+      - ${JELLYSEERR_PORT}:5055
     restart: unless-stopped
 
 #  overseerr:
@@ -83,7 +83,7 @@ services:
 #    volumes:
 #      - ${CONFIG_BASE_DIR}/overseerr:/config
 #    ports:
-#      - 5055:5055
+#      - ${OVERSEERR_PORT}:5055
 #    restart: unless-stopped
 
 # plex:
@@ -107,14 +107,14 @@ services:
 #     - ${PERSONAL_DIR_LOCAL}:${PERSONAL_DIR_RELATIVE}
 #     - ${TV_DIR_LOCAL}:${TV_DIR_RELATIVE}
 #   ports:
-#     - 3005:3005
-#     - 8324:8324
-#     - 32400:32400
-#     - 32410:32410
-#     - 32412:32412
-#     - 32413:32413
-#     - 32414:32414
-#     - 32469:32469
+#     - ${PLEX_PORT_DLNA1}:3005
+#     - ${PLEX_PORT_DLNA2}:8324
+#     - ${PLEX_PORT_WEB}:32400
+#     - ${PLEX_PORT_ROKU1}:32410
+#     - ${PLEX_PORT_ROKU2}:32412
+#     - ${PLEX_PORT_ROKU3}:32413
+#     - ${PLEX_PORT_ROKU4}:32414
+#     - ${PLEX_PORT_ROKU5}:32469
 #   restart: unless-stopped
 
 #  tautulli:
@@ -131,7 +131,7 @@ services:
 #    volumes:
 #      - ${CONFIG_BASE_DIR}/tautulli:/config
 #    ports:
-#      - 8181:8181
+#      - ${TAUTULLI_PORT}:8181
 #    restart: unless-stopped
 
   # ||--------------------------------------------------------------------------------||
@@ -153,12 +153,32 @@ services:
       - ${CONFIG_BASE_DIR}/jackett:/config
       - ${DOWNLOADS_DIR_WATCH_LOCAL}:${DOWNLOADS_DIR_WATCH_RELATIVE}
     ports:
-      - 9117:9117
+      - ${JACKETT_PORT}:9117
     restart: unless-stopped
 
   # ||--------------------------------------------------------------------------------||
   # ||                           Downloading Applications                             ||
   # ||--------------------------------------------------------------------------------||
+
+  pinchflat:
+    image: ghcr.io/kieraneglin/pinchflat:latest
+    container_name: pinchflat
+    hostname: pinchflat
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+      - BASIC_AUTH_USERNAME=${PINCHFLAT_USERNAME}
+      - BASIC_AUTH_PASSWORD=${PINCHFLAT_PASSWORD}
+    networks:
+      - media
+    volumes:
+      - ${PINCHFLAT_CONFIG_DIR}:/config
+      - ${PINCHFLAT_DOWNLOADS_DIR}:/downloads
+    ports:
+      - ${PINCHFLAT_PORT}:8945
+    restart: unless-stopped
 
 #  gluetun:
 #    image: qmcgaw/gluetun
@@ -181,16 +201,16 @@ services:
 #    volumes:
 #      - ${CONFIG_BASE_DIR}/gluetun:/gluetun
 #    ports:
-#      - 6000:9000/tcp
-#      - 6881:6881 # qbittorrent
-#      - 6881:6881/udp # qbittorrent
-#      - 7000:8000/tcp
-#      - 8112:8112 # deluge
-#      - 8080:8080 # sabnzbd
-#      - 8091:8091 # qbittorrent
-#      - 9091:9091 # transmission/transmission-openvpn
-#      - 51413:51413 # transmission/transmission-openvpn
-#      - 51413:51413/udp # transmission/transmission-openvpn
+#      - ${GLUETUN_PORT_GUI1}:9000/tcp
+#      - ${GLUETUN_PORT_QBITTORRENT1}:6881
+#      - ${GLUETUN_PORT_QBITTORRENT1}:6881/udp
+#      - ${GLUETUN_PORT_GUI2}:8000/tcp
+#      - ${GLUETUN_PORT_DELUGE}:8112
+#      - ${GLUETUN_PORT_SABNZBD}:8080
+#      - ${GLUETUN_PORT_QBITTORRENT2}:8091
+#      - ${GLUETUN_PORT_TRANSMISSION}:9091
+#      - ${GLUETUN_PORT_TRANSMISSION2}:51413
+#      - ${GLUETUN_PORT_TRANSMISSION2}:51413/udp
 #    restart: unless-stopped
 
   deluge:
@@ -205,10 +225,10 @@ services:
     networks:
       - media
     ports:
-      - 8112:8112
-      - 8118:8118
-      - 58846:58846
-      - 58946:58946/udp
+      - ${DELUGE_PORT_GUI}:8112
+      - ${DELUGE_PORT_PROXY}:8118
+      - ${DELUGE_PORT_DAEMON1}:58846
+      - ${DELUGE_PORT_DAEMON2}:58946/udp
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOWNLOADS_DIR_COMPLETE_LOCAL}:${DOWNLOADS_DIR_COMPLETE_RELATIVE}
@@ -245,10 +265,10 @@ services:
 #    networks:
 #      - media
 #    ports:
-#      - 8112:8112
-#      - 8118:8118
-#      - 58846:58846
-#      - 58946:58946/udp
+#      - ${DELUGE_PORT_GUI}:8112
+#      - ${DELUGE_PORT_PROXY}:8118
+#      - ${DELUGE_PORT_DAEMON1}:58846
+#      - ${DELUGE_PORT_DAEMON2}:58946/udp
 #    volumes:
 #      - /etc/localtime:/etc/localtime:ro
 #      - ${DOWNLOADS_DIR_COMPLETE_LOCAL2}:${DOWNLOADS_DIR_COMPLETE_RELATIVE2}
@@ -278,7 +298,7 @@ services:
 #      - ${CONFIG_BASE_DIR}/nzbget:/config
 #    ports:
 #      # nzbget
-#      - 6789:6789
+#      - ${NZBGET_PORT}:6789
 #    restart: unless-stopped
 
 #  nzbgetvpn:
@@ -317,7 +337,7 @@ services:
 #      - ${CONFIG_BASE_DIR}/nzbgetvpn:/config
 #    ports:
 #      # nzbget
-#      - 6789:6789
+#      - ${NZBGET_PORT}:6789
 #    restart: unless-stopped
 
   qbittorrent:
@@ -332,9 +352,9 @@ services:
     networks:
       - media
     ports:
-      - 6881:6881
-      - 6881:6881/udp
-      - 8091:8091
+      - ${QBITTORRENT_PORT_TCP}:6881
+      - ${QBITTORRENT_PORT_UDP}:6881/udp
+      - ${QBITTORRENT_PORT_GUI}:8091
       - 51413:51413
       - 51413:51413/udp
     volumes:
@@ -555,26 +575,6 @@ services:
     command: ["radarr"]
     restart: unless-stopped
 
-  readarr:
-    image: lscr.io/linuxserver/readarr:develop
-    container_name: readarr
-    hostname: readarr
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - UMASK=${UMASK}
-    networks:
-      - media
-    volumes:
-      - ${BOOKS_DIR_LOCAL}:${BOOKS_DIR_RELATIVE}
-      - ${CONFIG_BASE_DIR}/readarr:/config
-      - ${DOWNLOADS_DIR_COMPLETE_LOCAL}:${DOWNLOADS_DIR_COMPLETE_RELATIVE}
-      - ${DOWNLOADS_DIR_INCOMPLETE_LOCAL}:${DOWNLOADS_DIR_INCOMPLETE_RELATIVE}
-    ports:
-      - 8787:8787
-    restart: unless-stopped
-
   readarr-exporter:
     image: ghcr.io/onedr0p/exportarr:v2.0
     container_name: readarr-exporter
@@ -640,17 +640,17 @@ services:
       - seccomp:unconfined
       - apparmor:unconfined
     environment:
-      PHOTOPRISM_ADMIN_PASSWORD: "testpassword"
-      PHOTOPRISM_ADMIN_USER: "admin"
-      PHOTOPRISM_AUTH_MODE: "password"
-      PHOTOPRISM_AUTH_INTERVAL: 10
-      PHOTOPRISM_LOGIN_LIMIT: 100
-      PHOTOPRISM_LOGIN_INTERVAL: 60
+      PHOTOPRISM_ADMIN_PASSWORD: ${PHOTOPRISM_PASSWORD}
+      PHOTOPRISM_ADMIN_USER: ${PHOTOPRISM_USERNAME}
+      PHOTOPRISM_AUTH_MODE: ${PHOTOPRISM_ADMIN_AUTH_MODE}
+      PHOTOPRISM_AUTH_INTERVAL: ${PHOTOPRISM_AUTH_INTERVAL}
+      PHOTOPRISM_LOGIN_LIMIT: ${PHOTOPRISM_LOGIN_LIMIT}
+      PHOTOPRISM_LOGIN_INTERVAL: ${PHOTOPRISM_LOGIN_INTERVAL}
       PHOTOPRISM_DATABASE_DRIVER: "mysql"
-      PHOTOPRISM_DATABASE_NAME: "photoprism-db"
-      PHOTOPRISM_DATABASE_PASSWORD: "testpassword"
+      PHOTOPRISM_DATABASE_NAME: ${PHOTOPRISM_DATABASE_NAME}
+      PHOTOPRISM_DATABASE_PASSWORD: ${PHOTOPRISM_DATABASE_PASSWORD}
       PHOTOPRISM_DATABASE_SERVER: "photoprism-mariadb:3306"
-      PHOTOPRISM_DATABASE_USER: "admin"
+      PHOTOPRISM_DATABASE_USER: ${PHOTOPRISM_DATABASE_USER}
       PHOTOPRISM_DISABLE_TLS: false
       PHOTOPRISM_DETECT_NSFW: false
       PHOTOPRISM_DISABLE_CHOWN: false
@@ -672,11 +672,11 @@ services:
       PHOTOPRISM_ORIGINALS_LIMIT: 500000
       PHOTOPRISM_RAW_PRESETS: false
       PHOTOPRISM_READONLY: false
-      PHOTOPRISM_SITE_AUTHOR: "Optimus Prime"
-      PHOTOPRISM_SITE_CAPTION: "Megatron must be stopped. No matter the cost."
-      PHOTOPRISM_SITE_DESCRIPTION: "There is a thin line between being a hero and being a memory."
-      PHOTOPRISM_SITE_TITLE: "PhotoPrism"
-      PHOTOPRISM_SITE_URL: "http://localhost:2342/"
+      PHOTOPRISM_SITE_AUTHOR: ${PHOTOPRISM_SITE_AUTHOR}
+      PHOTOPRISM_SITE_CAPTION: ${PHOTOPRISM_SITE_CAPTION}
+      PHOTOPRISM_SITE_DESCRIPTION: ${PHOTOPRISM_SITE_DESCRIPTION}
+      PHOTOPRISM_SITE_TITLE: ${PHOTOPRISM_SITE_TITLE}
+      PHOTOPRISM_SITE_URL: ${PHOTOPRISM_SITE_URL}
       PHOTOPRISM_UPLOAD_NSFW: true
       PUID: 1000
       PGID: 1000
@@ -702,10 +702,10 @@ services:
     environment:
       MARIADB_AUTO_UPGRADE: 1
       MARIADB_INITDB_SKIP_TZINFO: 1
-      MARIADB_DATABASE: photoprism-db
-      MARIADB_USER: admin
-      MARIADB_PASSWORD: testpassword
-      MARIADB_ROOT_PASSWORD: admintestpass
+      MARIADB_DATABASE: ${PHOTOPRISM_DATABASE_NAME}
+      MARIADB_USER: ${PHOTOPRISM_DATABASE_USER}
+      MARIADB_PASSWORD: ${PHOTOPRISM_DATABASE_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${PHOTOPRISM_DATABASE_ROOT_PASSWORD}
     networks:
       - media
     volumes:
@@ -804,7 +804,7 @@ services:
 #      - ${DOCUMENTS_DIR_LOCAL}/paperless-ngx:/data
 #      - ${DOCUMENTS_DIR_LOCAL}:/documents
 #    ports:
-#      - 8001:8008
+#      - ${PAPERLESS_PORT}:8008
 #    restart: unless-stopped
 
 #  searxng:
@@ -833,7 +833,7 @@ services:
 #    volumes:
 #      - ${CONFIG_BASE_DIR}/searxng:/etc/searxng:rw
 #    ports:
-#      - 8082:8084
+#      - ${SEARXNG_PORT}:8084
 #    restart: unless-stopped
 
   syncthing:
@@ -850,6 +850,31 @@ services:
       - ${CONFIG_BASE_DIR}/syncthing:/config
       - ${SYNCTHING_MOUNT_DIR_1_LOCAL}:${SYNCTHING_MOUNT_DIR_1_RELATIVE}
       - ${SYNCTHING_MOUNT_DIR_2_LOCAL}:${SYNCTHING_MOUNT_DIR_2_RELATIVE}
+    restart: unless-stopped
+
+  dashdot:
+    image: mauricenino/dashdot:latest
+    container_name: dashdot
+    hostname: dashdot
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+      - DASHDOT_ENABLE_CPU_TEMPS=true
+      - DASHDOT_WIDGET_LIST=os,cpu,storage,ram,network
+      - DASHDOT_ENABLE_GPU_TEMPS=true
+      - DASHDOT_ENABLE_NETWORK=true
+    networks:
+      - media
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /:/host:ro
+      - /run:/run
+    ports:
+      - 3001:3001
+    privileged: true
     restart: unless-stopped
 
 #  tailscale:
@@ -911,7 +936,7 @@ services:
 #    networks:
 #      - media
 #    ports:
-#      - 8092:80
+#      - ${WALLABAG_PORT}:80
 #    volumes:
 #      - ${CONFIG_BASE_DIR}/wallabag/images:/var/www/wallabag/web/assets/images
 #    healthcheck:
@@ -992,6 +1017,8 @@ services:
 #      - media
 #    volumes:
 #      - ${CONFIG_BASE_DIR}/kometa:/config
+#    ports:
+#      - ${KOMETA_PORT}:8086
 #    restart: "no"
 
 # ||--------------------------------------------------------------------------------||
@@ -1008,7 +1035,7 @@ services:
 #      - ${CONFIG_BASE_DIR}/prometheus/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
 #      - ${CONFIG_BASE_DIR}/prometheus/config/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
 #    ports:
-#      - 9093:9093
+#      - ${ALERTMANAGER_PORT}:9093
 #    restart: always
   
   cadvisor:
@@ -1018,9 +1045,9 @@ services:
     networks:
       - media
     user: 1000:1000
-    mem_limit: 256m
-    mem_reservation: 64m
-    cpu_shares: 512
+    mem_limit: ${CADVISOR_MEM_LIMIT}
+    mem_reservation: ${CADVISOR_MEM_RESERVATION}
+    cpu_shares: ${CADVISOR_CPU_SHARES}
     security_opt:
       - no-new-privileges=true
     # read_only: true
@@ -1029,6 +1056,8 @@ services:
       - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - ${CADVISOR_PORT}:8080  # Changed port mapping to use environment variable
     command:
       - '--docker_only=true'
     restart: unless-stopped
@@ -1050,17 +1079,16 @@ services:
       - GF_DATABASE_NAME=${GRAFANA_DATABASE_NAME}
       - GF_DATABASE_USER=${GRAFANA_DATABASE_USER}
       - GF_DATABASE_PASSWORD=${GRAFANA_DATABASE_PASSWORD}
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource,natel-discrete-panel,grafana-piechart-panel
-      # - GF_INSTALL_PLUGINS=grafana-clock-panel
+      - GF_INSTALL_PLUGINS=${GRAFANA_PLUGINS}
       # - GF_SERVER_ROOT_URL=http://my.grafana.server/
     networks:
       - media
-    mem_limit: 512m
-    cpu_shares: 512
+    mem_limit: ${GRAFANA_MEM_LIMIT}
+    cpu_shares: ${GRAFANA_CPU_SHARES}
     security_opt:
       - no-new-privileges:true
     healthcheck:
-      test: wget --no-verbose --tries=1 --spider http://localhost:3000/api/health
+      test: wget --no-verbose --tries=1 --spider ${GRAFANA_HEALTH_CHECK_URL}
     volumes:
       - ${CONFIG_BASE_DIR}/grafana/storage:/var/lib/grafana
     ports:
@@ -1119,9 +1147,9 @@ services:
       - UMASK=${UMASK}
     networks:
       - media
-    mem_limit: 256m
-    mem_reservation: 64m
-    cpu_shares: 512
+    mem_limit: ${NODE_EXPORTER_MEM_LIMIT}
+    mem_reservation: ${NODE_EXPORTER_MEM_RESERVATION}
+    cpu_shares: ${NODE_EXPORTER_CPU_SHARES}
     security_opt:
       - no-new-privileges=true
     # read_only: true
@@ -1180,8 +1208,8 @@ services:
       - UMASK=${UMASK}
     networks:
       - media
-    mem_limit: 1g
-    cpu_shares: 768
+    mem_limit: ${PROMETHEUS_MEM_LIMIT}
+    cpu_shares: ${PROMETHEUS_CPU_SHARES}
     security_opt:
       - no-new-privileges=true
     user: 0:0
@@ -1195,7 +1223,7 @@ services:
     ports:
       - 9090:9090
     command:
-      - '--storage.tsdb.retention.time=60d'
+      - '--storage.tsdb.retention.time=${PROMETHEUS_RETENTION_TIME}'
       - '--config.file=/etc/prometheus/prometheus.yaml'
     restart: unless-stopped
 
@@ -1208,6 +1236,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
       - UMASK=${UMASK}
+      - REDIS_URL=${REDIS_URL}
     user: 1000:1000
     ports:
     - 6379:6379
@@ -1223,9 +1252,9 @@ services:
       - UMASK=${UMASK}
     networks:
       - media
-    mem_limit: 256m
-    mem_reservation: 64m
-    cpu_shares: 512
+    mem_limit: ${SNMP_EXPORTER_MEM_LIMIT}
+    mem_reservation: ${SNMP_EXPORTER_MEM_RESERVATION}
+    cpu_shares: ${SNMP_EXPORTER_CPU_SHARES}
     security_opt:
       - no-new-privileges:true
     # read_only: true
@@ -1264,15 +1293,15 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
       - UMASK=${UMASK}
-      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_CLEANUP=${WATCHTOWER_CLEANUP}
       - WATCHTOWER_HTTP_API_TOKEN={$WATCHTOWER_HTTP_API_TOKEN}
-      - WATCHTOWER_INCLUDE_RESTARTING=true
-      - WATCHTOWER_INCLUDE_STOPPED=true
-      - WATCHTOWER_LABEL_ENABLE=false
-      - WATCHTOWER_NOTIFICATION_REPORT=true
+      - WATCHTOWER_INCLUDE_RESTARTING=${WATCHTOWER_INCLUDE_RESTARTING}
+      - WATCHTOWER_INCLUDE_STOPPED=${WATCHTOWER_INCLUDE_STOPPED}
+      - WATCHTOWER_LABEL_ENABLE=${WATCHTOWER_LABEL_ENABLE}
+      - WATCHTOWER_NOTIFICATION_REPORT=${WATCHTOWER_NOTIFICATION_REPORT}
       - WATCHTOWER_NOTIFICATION_URL=${WATCHTOWER_NOTIFICATION_URL}
       - WATCHTOWER_POLL_INTERVAL=${WATCHTOWER_POLL_INTERVAL}
-      - WATCHTOWER_REMOVE_VOLUMES=true
+      - WATCHTOWER_REMOVE_VOLUMES=${WATCHTOWER_REMOVE_VOLUMES}
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
@@ -1293,10 +1322,10 @@ services:
     init: true
     networks:
       - media
-    user: "0:0"  # Required for Docker socket access
+    user: "0:0"    #required for docker socket access
     security_opt:
-      - no-new-privileges:true  # Prevent privilege escalation
-    cap_drop:  # Remove unnecessary capabilities
+      - no-new-privileges:true
+    cap_drop:
       - ALL
     ports:
       - "85:80"
@@ -1309,6 +1338,19 @@ services:
       - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
+#      - NEXTCLOUD_UPLOAD_LIMIT=${NEXTCLOUD_UPLOAD_LIMIT}
+#      - NEXTCLOUD_MAX_TIME=${NEXTCLOUD_MAX_TIME}
+#      - NEXTCLOUD_MEMORY_LIMIT=${NEXTCLOUD_MEMORY_LIMIT}
+#      - NEXTCLOUD_TRUSTED_CACERTS_DIR=${NEXTCLOUD_TRUSTED_CACERTS_DIR}
+#      - NEXTCLOUD_STARTUP_APPS=${NEXTCLOUD_STARTUP_APPS}
+#      - NEXTCLOUD_ADDITIONAL_APKS=${NEXTCLOUD_ADDITIONAL_APKS}
+#      - NEXTCLOUD_ADDITIONAL_PHP_EXTENSIONS=${NEXTCLOUD_ADDITIONAL_PHP_EXTENSIONS}
+#      - NEXTCLOUD_ENABLE_DRI_DEVICE=${NEXTCLOUD_ENABLE_DRI_DEVICE}
+#      - NEXTCLOUD_DATADIR=${NEXTCLOUD_DATADIR}
+#      - NEXTCLOUD_MOUNT=${NEXTCLOUD_MOUNT}
+#      - APACHE_PORT=${APACHE_PORT}
+#      - COLLABORA_SECCOMP_DISABLED=${COLLABORA_SECCOMP_DISABLED}
+#      - FULLTEXTSEARCH_JAVA_OPTIONS=${FULLTEXTSEARCH_JAVA_OPTIONS}
 
 # ||--------------------------------------------------------------------------------||
 # ||                                Flaresolverr                                    ||
@@ -1317,16 +1359,81 @@ services:
     image: ysx88/flaresolverr
     container_name: flaresolverr
     environment:
-      - LOG_LEVEL=${LOG_LEVEL:-info}
-      - LOG_HTML=${LOG_HTML:-false}
-      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
-      - TZ=Europe/London
+      - LOG_LEVEL=${LOG_LEVEL}
+      - LOG_HTML=${LOG_HTML}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER}
+      - TZ=${TZ}
+    networks:
+      - media  # Add to media network
     ports:
-      - "${PORT:-8191}:8191"
+      - "${PORT}:8191"
     restart: unless-stopped
 
-volumes:
+  # ||--------------------------------------------------------------------------------||
+  # ||                                Ebooks Services                                 ||
+  # ||--------------------------------------------------------------------------------||
+  
+  calibre:
+    image: linuxserver/calibre
+    container_name: calibre
+    hostname: calibre
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+      # Note: Calibre has no default authentication
+    networks:
+      - media
+    volumes:
+      - ${CONFIG_BASE_DIR}/calibre:/config
+      - ${BOOKS_DIR_LOCAL}:${BOOKS_DIR_RELATIVE}
+    ports:
+      - 3060:8080
+      - 3061:8081
+    restart: unless-stopped
+
+  calibre-web:
+    image: linuxserver/calibre-web
+    container_name: calibre-web
+    hostname: calibre-web
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+      # Default login: admin/admin123 (can be changed through UI after first login)
+    networks:
+      - media
+    volumes:
+      - ${CONFIG_BASE_DIR}/calibre:/config
+      - ${BOOKS_DIR_LOCAL}/calibre:${BOOKS_DIR_RELATIVE}
+      - 8083:8083
+    restart: unless-stopped
+
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    hostname: readarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=${UMASK}
+    networks:
+      - media
+    volumes:
+      - ${BOOKS_DIR_LOCAL}:${BOOKS_DIR_RELATIVE}
+      - ${CONFIG_BASE_DIR}/readarr:/config
+      - ${DOWNLOADS_DIR_COMPLETE_LOCAL}:${DOWNLOADS_DIR_COMPLETE_RELATIVE}
+      - ${DOWNLOADS_DIR_INCOMPLETE_LOCAL}:${DOWNLOADS_DIR_INCOMPLETE_RELATIVE}
+    ports:
+      - 8787:8787
+    restart: unless-stopped
+
+volumes: # If you want to store the data on a different drive, see https://github.com/nextcloud/all-in-one#how-to-store-the-filesinstallation-on-a-separate-drive
   nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer # This line is not allowed to be changed as otherwise the built-in backup solution will not work
 
 networks:
   media:  # Keep existing network config

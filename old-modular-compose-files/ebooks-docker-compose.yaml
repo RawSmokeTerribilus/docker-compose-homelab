@@ -1,0 +1,51 @@
+# ||--------------------------------------------------------------------------------||
+# ||                                CALIBRE+CALIBRE-WEB+READARR                     ||
+# ||--------------------------------------------------------------------------------||
+services:
+  calibre:
+    image: linuxserver/calibre
+    container_name: calibre
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+      - GUAC_USER=YOUR-USER #optional
+      - GUAC_PASS=YOUR-PASSWORD #optional
+    volumes:
+      - ./data:/config
+      - /YOUR/PATH:/books
+    ports:
+      - 3060:8080
+      - 3061:8081
+  calibre-web:
+    image: linuxserver/calibre-web
+    container_name: calibre-web
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+      - GUAC_USER=YOUR-USER #optional
+      - GUAC_PASS=YOUR-PASSWORD #optional
+    volumes:
+      - ./data:/config
+      - /YOUR/PATH/calibre:/books  # same as above + "calibre" folder
+    ports:
+      - 8083:8083
+    restart: unless-stopped
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    hostname: readarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /YOUR/PATH:/books
+      - ./data/readarr:/config
+      - /PATH/TO/YOUR/COMPLETE-DOWNLOADS:/downloads/complete
+      - /PATH/TO/YOUR/INCOMPLETE-DOWNLOADS:/downloads/incomplete
+    ports:
+      - 8787:8787
+    restart: unless-stopped

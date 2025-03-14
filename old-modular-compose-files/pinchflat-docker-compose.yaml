@@ -10,5 +10,5 @@ services:
     ports:
       - '8945:8945'
     volumes:
-      - /home/rawserver/.config:/config   #change
-      - /run/media/rawserver/External HDD/YOUTUBE:/downloads  #change
+      - /YOUR/PREFERED/PATH/.config:/config   #change
+      - /YOUR/DOWNLOADS:/downloads  #change
