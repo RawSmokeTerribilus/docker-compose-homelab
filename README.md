@@ -282,259 +282,54 @@ For **Grafana** you will want to import the dashboard from `resources/grafana/se
 
 ## Environment Variables
 
-In `environment_variables.env.example` are the environment variables to use for
-the Docker Compose files. You will want to copy this to `.env` and modify the
-file according to the values for your setup. Here are all the environment
-variables and their purpose:
+Environment variables are organized into clear sections in both `.env` and `environment_variables.env.example`:
 
-- `BAZARR_API_KEY`: The API key for Bazarr
-- `BOOKS_DIR_LOCAL`: The directory to keep Book files that are organized
-  locally on disk (i.e. `/volume1/books`)
-- `BOOKS_DIR_RELATIVE`: The directory to keep Book files that are organized
-  _relative_ to the container (i.e. **not** the actual location of the files on
-  disk e.g. `/books` => `${BOOKS_DIR_LOCAL}` e.g. `/books` => `/volume1/books`)
-- `COMICS_DIR_LOCAL`: The directory to keep Comic Book files that are organized
-  locally on disk (i.e. `/volume1/books`)
-- `COMICS_DIR_RELATIVE`: The directory to keep Comic Book files that are
-  organized _relative_ to the container (i.e. **not** the actual location of the
-  files on disk e.g. `/books` => `${BOOKS_DIR_LOCAL}` e.g. `/comics` =>
-  `/volume1/comics`)
-- `CONFIG_BASE_DIR`: The base directory where each of the containers will have
-  their configurations persistently stored between reboots, restarts, etc. (e.g.
-  `/volume1/docker`)... and will serve the container the directory (e.g.
-  _Deluge_ => `/volume1/docker`/deluge, _Plex_ =>
-  `/volume1/docker`/plex, _Tailscale_ => `/volume1/docker`/tailscale, etc.) =>
-  (e.g. Deluge => `deluge`, Plex => `plex`,
-  Tailscale => `tailscale`, etc.)
-- `DOCUMENTS_DIR_LOCAL`: The directory of locally stored Document files
+### Variable Organization
+- Base Configuration
+- Media Players & Services
+- Download Clients
+- Monitoring Tools
+- Photo Management
+- System Resources
+- Authentication & API Keys
+- Service-specific Configurations
 
-**Port Variables:**
-All service ports have been moved to environment variables for better control and flexibility. 
-This allows you to easily change ports to avoid conflicts with other services on your system.
-To modify a port, simply update its corresponding variable in the `environment_variables.env` file.
-For example: `DELUGE_PORT_GUI=8112` or `PLEX_PORT_WEB=32400`.
-No port conflicts have been detected in the default configuration.
+### Port Variables Convention
+All service ports follow a standardized naming convention:
+```properties
+# External port (host machine)
+SERVICE_LOCAL_PORT=xxxx
 
-- `DOWNLOADS_DIR_COMPLETE_LOCAL`: The directory to keep completely downloaded
-  files locally on disk (i.e. `/volume1/Downloads/complete`)
-- `DOWNLOADS_DIR_COMPLETE_RELATIVE`: The directory to keep completely downloaded
-  files _relative_ to the container (i.e. **not** the actual location of the
-  files on disk e.g. `/complete` => `${DOWNLOADS_DIR_COMPLETE_LOCAL}` e.g.
-  `/complete` => `/volume1/Downloads/complete`)
-- `DOWNLOADS_DIR_INCOMPLETE_LOCAL`: The directory to keep incompletely downloaded
-  files locally on disk (i.e. `/volume1/Downloads/incomplete`)
-- `DOWNLOADS_DIR_INCOMPLETE_RELATIVE`: The directory to keep incompletely
-  downloaded files _relative_ to the container (i.e. **not** the actual location
-  of the files on disk e.g. `/incomplete` => `${DOWNLOADS_DIR_INCOMPLETE_LOCAL}`
-  e.g. `/incomplete` => `/volume1/Downloads/watch`)
-- `DOWNLOADS_DIR_WATCH_LOCAL`: The directory to keep files to be watched
-  locally on disk (i.e. `/volume1/Downloads/watch`)
-- `DOWNLOADS_DIR_WATCH_RELATIVE`: The directory to keep files to be watched
-  _relative_ to the container (i.e. **not** the actual location of the files on
-  disk e.g. `/watch` => `${DOWNLOADS_DIR_WATCH_LOCAL}` e.g. `/watch` =>
-  `/volume1/Downloads/watch`)
-- `GATEWAY_IP`: Gateway IP for the Docker Compose subnet (e.g. `172.16.0.1`)
-- `GRAFANA_DATABASE_NAME`: The name for the Grafana database
-- `GRAFANA_DATABASE_USER`: The user for the Grafana database
-- `GRAFANA_DATABASE_PASSWORD`: The password for the Grafana database
-- `HEALTH_CHECK_HOST`: Hostname to use for VPN health checks (e.g.:
-  `google.com`)
-- `HOMEASSISTANT_PGID`: The group ID for the running process in the container
-  environment (e.g. `1000`)
-- `HOMEASSISTANT_PUID`: The user ID for the running process in the container
-  environment (e.g. `1000`)
-- `HOMEASSISTANT_CONFIG_BASE_DIR`: The _base_ directory where each of the
-  containers for and support Home Assistant will have their configurations
-  persistently stored between reboots, restarts, etc. (e.g.
-  `/volume1/homeassistant-docker`)... and will serve the container the directory
-  (e.g. _NodeRED_ => `/volume1/homeassistant-docker`/nodered, _ZigBee_ =>
-  `/volume1/homeassistant-docker`/zigbee, _Home Assistant_ => 
-  `/volume1/homeassistant-docker`/homeassistant, etc.) =>  (e.g. NodeRED =>
-  `nodered`, ZigBee => `zigbee`, Home Assistant => `homeassistant`, etc.). So,
-  in this example, it is simply the home where each of these containers
-  configurations will live: `/volume1/homeassistant-docker`
-- `HOMEASSISTANT_DATA_DIR_1_LOCAL`: The directory to of data files we would like
-  exposed to Home Assistant locally on disk (i.e. `/tmp`)
-- `HOMEASSISTANT_DATA_DIR_2_LOCAL`: The directory to of data files we would like
-  exposed to Home Assistant locally on disk (i.e. `/etc`)
-- `HOMEASSISTANT_DATA_DIR_3_LOCAL`: The directory to of data files we would like
-  exposed to Home Assistant locally on disk (i.e. `/mnt`)
-- `HOMEASSISTANT_DATA_DIR_1_RELATIVE`: The directory to we house data files
-  _relative_ to the container (i.e. **not** the actual location of the
-  files on disk e.g. `/foo_tmp` => `${HOMEASSISTANT_DATA_DIR_1_LOCAL}` e.g.
-  `/foo_tmp` => `/tmp`)
-- `HOMEASSISTANT_DATA_DIR_2_RELATIVE`: The directory to we house data files
-  _relative_ to the container (i.e. **not** the actual location of the
-  files on disk e.g. `/etc_tmp` => `${HOMEASSISTANT_DATA_DIR_2_LOCAL}` e.g.
-  `/etc_tmp` => `/etc`)
-- `HOMEASSISTANT_DATA_DIR_3_RELATIVE`: The directory to we house data files
-  _relative_ to the container (i.e. **not** the actual location of the
-  files on disk e.g. `/mnt_tmp` => `${HOMEASSISTANT_DATA_DIR_3_LOCAL}` e.g.
-  `/mnt_tmp` => `/mnt`)
-- ~~`IMMICH_DB_DATABASE_NAME`~~: The name for the Immich database
-- ~~`IMMICH_DB_PASSWORD`~~: A password for the Immich database
-- ~~`IMMICH_DB_USERNAME`~~: A username for the Immich database
-- ~~`IMMICH_VERSION`~~: The version of Immich to use (default: `release`)
-- `IP_RANGE`: IP range for the Docker Compose subnet
-- ~~`KOMETA_PLEX_TOKEN`~~: The Plex claim ID from above but without the `claim-`
-  prefix
-- ~~`KOMETA_PLEX_URL`~~: The internal Docker URL for the plex container for use by
-  Kometa (previously: Plex Meta Manager) (e.g. (and probably should not change)
-  `http://plex:32400`)
-- `LAN_NETWORK`: Private IP network the Docker Compose subnet is attached to on
-  you private LAN (e.g. `192.168.0.0/24` => `192.168.0.1`: router,
-  `192.168.0.5`: NAS machine, `192.168.0.88`: Laptop, etc.)
-- `LIDARR_API_KEY`: The API key for Lidarr
-- `LOG_LEVEL`: Logging level for FlareSolverr (default: info)
-- `LOG_HTML`: Enable HTML logging for FlareSolverr
-- `MOVIES_DIR_LOCAL`: The directory to keep Movie files that are organized
-  locally on disk (i.e. `/volume1/movies`)
-- `MOVIES_DIR_RELATIVE`: The directory to keep Movie files that are organized
-  _relative_ to the container (i.e. **not** the actual location of the files on
-  disk e.g. `/movies` => `${MOVIES_DIR_LOCAL}` e.g. `/movies` =>
-  `/volume1/movies`)
-- `MUSIC_DIR_LOCAL`: The directory to keep Music files that are organized
-  locally on disk (i.e. `/volume1/music`)
-- `MUSIC_DIR_RELATIVE`: The directory to keep Music files that are organized
-  _relative_ to the container (i.e. **not** the actual location of the files on
-  disk e.g. `/music` => `${MUSIC_DIR_LOCAL}` e.g. `/music` => `/volume1/music`)
-- `NAME_SERVERS`: The DNS servers to use when the VPN is connected
-- `NEXTCLOUD_UPLOAD_LIMIT`: Maximum upload file size for Nextcloud
-- `NEXTCLOUD_MAX_TIME`: Maximum execution time for Nextcloud operations
-- `NEXTCLOUD_MEMORY_LIMIT`: PHP memory limit for Nextcloud
-- `NEXTCLOUD_TRUSTED_CACERTS_DIR`: Directory containing trusted CA certificates
-- `NEXTCLOUD_STARTUP_APPS`: Comma-separated list of apps to enable on startup
-- `NEXTCLOUD_ADDITIONAL_APKS`: Additional Alpine packages to install
-- `NEXTCLOUD_ADDITIONAL_PHP_EXTENSIONS`: Additional PHP extensions to install
-- `NEXTCLOUD_ENABLE_DRI_DEVICE`: Enable DRI device access
-- `NEXTCLOUD_DATADIR`: Data directory location
-- `NEXTCLOUD_MOUNT`: Additional mount points
-- `APACHE_PORT`: Port for Apache server
-- `COLLABORA_SECCOMP_DISABLED`: Disable seccomp for Collabora
-- `FULLTEXTSEARCH_JAVA_OPTIONS`: Java options for full-text search
-- ~~`NZBGET_WEBUI_PASSWORD`~~: NZBGet Password for the Web UI
-- ~~`NZBGET_WEBUI_USERNAME=admin`~~: NZBGet Username for the Web UI
-- `OPENVPN_CONFIG`: Transmission OpenVPN configuration file(s) to use (e.g.
-  `us_west.ovpn` => `us_west` or to use more than one file:
-  `us_west,us_california,us_east`)
-- `OPENVPN_OPTS`: Transmission OpenVPN optional arguments (default: null)
-- `OPENVPN_PROVIDER`: Transmission OpenVPN Provider (e.g. `PIA` for Private
-  Internet Access VPN, etc.)
-- `PERSONAL_DIR_LOCAL`: The directory where Personal videos files that are
-  organized locally on disk (i.e. `/volume1/personal/videos`)
-- `PERSONAL_DIR_RELATIVE`: The directory where Personal videos files that are
-  organized _relative_ to the container (i.e. **not** the actual location of the
-  files on disk e.g. `/personal` => `${PERSONAL_DIR_LOCAL}` e.g. `/personal` =>
-  `/volume1/personal/videos`)
-- `PGID`: The group ID for the running process in the container environment
-  (e.g. `1000`)
-- `PHOTOPRISM_USERNAME`: The username for the PhotoPrism service
-- `PHOTOPRISM_PASSWORD`: The password for the PhotoPrism service
-- `PHOTOPRISM_DATABASE_NAME`: The name for the PhotoPrism database
-- `PHOTOPRISM_DATABASE_USER`: The database user for the PhotoPrism database
-- `PHOTOPRISM_DATABASE_PASSWORD`: The database password for the PhotoPrism
-  database (e.g. `password`)
-- `PHOTOPRISM_DATABASE_ROOT_PASSWORD`: The database root password for the
-  PhotoPrism database
-- `PHOTOS_DIR_LOCAL`: The directory to photo file originals are stored for use
-  by the photo services herein (e.g. PhotoPrism, Immich, etc.)
-- `PINCHFLAT_USERNAME`: Username for Pinchflat web interface
-- `PINCHFLAT_PASSWORD`: Password for Pinchflat web interface
-- `PINCHFLAT_CONFIG_DIR`: Directory for Pinchflat configuration
-- `PINCHFLAT_DOWNLOADS_DIR`: Directory for Pinchflat downloads
-- ~~`PLEX_CLAIM`~~: The Plex claim ID received from <https://plex.tv/claim> when
-  first starting the Plex service
-- `PORTAINER_PASSWORD`: An http password encoded string (see this tool:
-  [HTPasswd Generator](https://www.web2generators.com/apache-tools/htpasswd-generator))
-  to use for the Portainer docker instance we create
-- `PRIVATE_INTERNET_ACCESS_VPN_PORT_FORWARDING`: Gluetun VPN killswitch setting
-  for port forward with Private Internet Access (i.e. `on` or `off`)
-- `PROWLARR_API_KEY`: The API key for Prowlarr
-- `PUID`: The user ID for the running process in the container environment
-  (e.g. `1000`)
-- ~~`RANA_ARGUMENTS`~~: Arguments to pass in `rana` on execution to
-  find a prefixed sub-string(s) (e.g. "-n=j0hnwyles,j0hnwyl3s -c 4")
-- `READARR_API_KEY`: The API key for Readarr
-- `RADARR_API_KEY`: The API key for Radarr
-- `SABNZBD_API_KEY`: The API key for Sabnzbd
-- `SERVER_COUNTRIES`: Gluetun VPN killswitch setting for the regions to use
-- ~~`SEARXNG_HOSTNAME`~~: Hostname to reference for SearXNG internally
-- `SONARR_API_KEY`: The API key for Sonarr
-- `SUBNET`: The subnet for the Docker Compose environment (e.g. `172.16.0.0/16`)
-- `SYNCTHING_MOUNT_DIR_1_LOCAL`: The directory of a path locally that you would
-  like to have Syncthing sync with other Syncthing instances (i.e.
-  `/volume1/sync`)
-- `SYNCTHING_MOUNT_DIR_1_RELATIVE`: The directory Syncthing will refer to
-  locally _relative_ to the container (i.e. **not** the actual location of the files on
-  disk e.g. `/sync` => `${SYNCTHING_MOUNT_DIR_1_LOCAL}` e.g. `/sync` =>
-  `/volume1/sync`)
-- `SYNCTHING_MOUNT_DIR_2_LOCAL`: The directory of a path locally that you would
-  like to have Syncthing sync with other Syncthing instances (i.e.
-  `/volume1/some_other_directory`)
-- `SYNCTHING_MOUNT_DIR_2_RELATIVE`: The directory Syncthing will refer to locally
-  _relative_ to the container (i.e. **not** the actual location of the files on
-  disk e.g. `/some_other_directory` => `${SYNCTHING_MOUNT_DIR_1_LOCAL}` e.g.
-  `/some_other_directory` =>
-  `/volume1/some_other_directory`)
-- ~~`TAILSCALE_HOSTNAME`~~: The hostname of this tailscale instance (e.g.
-  `my-nas-server`)
-- ~~`TAILSCALE_STATE_ARG`~~: The Tailscale argument for the state argument variable
-  (e.g. `"mem:"`)
-- `TRANSMISSION_PASS`: The default password to set for Tranmission account
-  (default: `admin`)
-- `TRANSMISSION_USER`: The account for access to Transmission (default: `admin`)
-- ~~`TS_ACCEPT_DNS`~~: Tailscale setting for DNS entries (default: `true`)
-- ~~`TS_AUTH_KEY`~~: The Tailscale authorization key from
-  [Tailscale.com > Settings > Personal Settings > Keys](https://login.tailscale.com/admin/settings/keys)
-- ~~`TS_DEST_IP`~~: Tailscale setting for target IP (default: null)
-- ~~`TS_EXTRA_ARGS`~~: Extra arguments to pass to `tailscale up` (Recommended:
-  `="--reset --advertise-exit-node --ssh"`)
-- ~~`TS_KUBE_SECRET`~~: Kubernetes secret if you are in a K8S cluster
-- ~~`TS_OUTBOUND_HTTP_PROXY_LISTEN`~~: Proxy settings if you have outbound proxy
-  settings (default: null)
-- ~~`TS_ROUTES`~~: Tailscale routing (default: null)
-- ~~`TS_SOCKET`~~: Socket file for `tailscaled` (default: `/tmp/tailscaled.sock`)
-- ~~`TS_TAILSCALED_EXTRA_ARGS`~~: Extra arguments to pass to start of `tailscaled`
-  (default: null)
-- ~~`TS_USERSPACE`~~: Userspace setting for Tailscale (default: null)
-- ~~`TS_SOCKS5_SERVER`~~: SOCKS5 settings (default: null)
-- ~~`TS_STATE_DIR`~~: Directory for tailscale storage state directory (default:
-  `/var/lib/tailscale`)
-- `TV_DIR_LOCAL`: The directory to keep TV show files that are organized
-  locally on disk (i.e. `/volume1/tv`)
-- `TV_DIR_RELATIVE`: The directory to keep TV show files that are organized
-  _relative_ to the container (i.e. **not** the actual location of the files on
-  disk e.g. `/tv` => `${TV_DIR_LOCAL}` e.g. `/tv` => `/volume1/tv`)
-- `UN_LIDARR_0_API_KEY`: Lidarr API key
-- `UN_RADARR_0_API_KEY`: Radarr API key
-- `UN_READARR_0_API_KEY`: Readarr API key
-- `UN_SONARR_0_API_KEY`: Sonarr API key
-- ~~`VANITY_AGE_ARGUMENTS`~~: A RegEx that you would like to find at the beginning
-  of a `age` public key (e.g. "\d+j0hn\d?wyles.*")
-- `VPN_PASS`: VPN password for your VPN provider
-- `VPN_SERVICE_PROVIDER`: Gluetun VPN service provider (e.g.
-  `private internet access` for Private Internet Access VPN, `nordvpn` for
-  NordVPN, etc.)
-- `WATCHTOWER_HTTP_API_TOKEN`: A passphrase to use when pulling metrics for a
-  tool like Promethus
-- `WATCHTOWER_NOTIFICATION_URL`: A webhook URL to hit for Watchtower
-  notifications
-- `WATCHTOWER_POLL_INTERVAL`: Poll interval for Watchtower to check for images
-- `VPN_USER`: VPN username for your VPN provider
-- ~~`WALLABAG_DATABASE_NAME`~~: The name for the Wallabag database
-- ~~`WALLABAG_DATABASE_PASSWORD`~~: The password for the Wallabag database
-- ~~`WALLABAG_DATABASE_ROOT_PASSWORD`~~: The root password for the Wallabag database
-- ~~`WALLABAG_DATABASE_USER`~~: The user for the Wallabag database
-- ~~`WALLABAG_DOMAIN_NAME`~~: The domain name for the Wallabag service
-- ~~`WALLABAG_FROM_EMAIL`~~: The email address to use for the "from" field in emails
-- ~~`WALLABAG_SERVER_NAME`~~: The server name for the Wallabag service
-- `WATCHTOWER_NOTIFICATION_URL`: (optional) Watchtower Webhook Notification URL
-- `WATCHTOWER_POLL_INTERVAL`: Interval for Watchtower to check for new container
-  images (e.g. 21600 ("6 hours"))
-- `WIREGUARD_PRIVATE_KEY`: Gluetun wireguard private key setting (Author note: I
-  do regret if you have to go through setting this arduous process... Details
-  here for NordVPN at least):
-  [Getting NordVPN WireGuard details](https://gist.github.com/bluewalk/7b3db071c488c82c604baf76a42eaad3)
+# Internal port (container)
+SERVICE_RELATIVE_PORT=xxxx
+
+# Example:
+DELUGE_LOCAL_PORT_GUI=8112    # Port on your host
+DELUGE_RELATIVE_PORT_GUI=8112  # Port inside container
+```
+
+### Important Notes
+1. **Active vs. Commented Services:**
+   - Variables for active services in docker-compose.yml should be uncommented in .env
+   - Variables for commented services should remain commented in .env
+   - The example file contains all possible variables with generic placeholders
+
+2. **Internal Communication:**
+   - For container-to-container communication, services use hardcoded internal ports
+   - Example: `http://sonarr:8989` in service URLs
+   - These internal URLs are independent of the exposed port variables
+
+3. **Resource Limits:**
+   Services can have optional resource limit variables:
+   ```properties
+   SERVICE_MEM_LIMIT=128m
+   SERVICE_CPU_SHARES=128
+   ```
+
+4. **Environment Files:**
+   - `.env`: Your active configuration with real values
+   - `environment_variables.env.example`: Template with generic placeholders
+   - Both files maintain the same structure and organization
 
 ## TODO
 

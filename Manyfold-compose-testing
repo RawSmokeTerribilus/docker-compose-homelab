@@ -1,0 +1,62 @@
+services:
+  app:
+    image: ghcr.io/manyfold3d/manyfold:latest
+    ports:
+      - 3214:3214
+    volumes:
+      # Uncomment to add a filesystem volume for your model library (or multiple if
+      # you want multiple libraries), in the form <local_path>:<container_path>.
+      # The local path could be a folder that already contains models, in which case Manyfold
+      # will scan and import them, or it could be empty.
+      # The container path can be anything; you will need to enter it in the "new library" form.
+      - PATH/TO/YOUR/3D MODELS:/models
+      - ./config:/config
+    environment:
+      DATABASE_ADAPTER: postgresql # mysql2 or sqlite3 are also supported
+      DATABASE_HOST: postgres-server
+      DATABASE_PORT: 5432 # only needed for non-standard ports
+      DATABASE_NAME: manyfold # or the path to the database file if using sqlite3
+      DATABASE_USER: manyfold
+      DATABASE_PASSWORD: YOUR-OWN-STRONG-PASSWORD
+      SECRET_KEY_BASE: F35X68JFG53X8JF5G6H748XF5G67J8XFG8XFG8578F5G37X86JFG3X8F5G7
+      # This is a random string that should be kept secret. You can generate one with any hash generator.
+      REDIS_URL: redis://redis-server:6379/1
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Madrid
+     
+      
+      # For details of other optional environment variables, including features such
+      # as multiuser mode, visit https://manyfold.app/sysadmin/configuration.html
+    restart: unless-stopped
+    depends_on:
+      - postgres-server
+      - redis-server
+    networks:
+      - manyfold
+    # Optional, but recommended for better security
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - SETUID
+      - SETGID
+
+  postgres-server:
+    image: postgres:15
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: manyfold
+      POSTGRES_PASSWORD: YOUR-OWN-STRONG-PASSWORD
+    restart: unless-stopped
+
+volumes:
+  db_data:
+
+networks:
+  manyfold:
+   external: true
