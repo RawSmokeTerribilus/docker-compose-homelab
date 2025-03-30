@@ -216,14 +216,16 @@ This sets the `CONFIG_BASE_DIR` directory that will store all of the subsequent 
 ```shell
 # Media Center Core
 mkdir -p ${CONFIG_BASE_DIR}/bazarr
+mkdir -p ${CONFIG_BASE_DIR}/calibre-web
 mkdir -p ${CONFIG_BASE_DIR}/deluge
 mkdir -p ${CONFIG_BASE_DIR}/emby
 mkdir -p ${CONFIG_BASE_DIR}/grafana/{database,storage,snmp}
 mkdir -p ${CONFIG_BASE_DIR}/homarr/{configs,icons,data}
+mkdir -p ${CONFIG_BASE_DIR}/jackett
 mkdir -p ${CONFIG_BASE_DIR}/jellyfin
 mkdir -p ${CONFIG_BASE_DIR}/jellyseerr
 mkdir -p ${CONFIG_BASE_DIR}/lidarr
-mkdir -p ${CONFIG_BASE_DIR}/nextcloud-aio  # For potential future use
+mkdir -p ${CONFIG_BASE_DIR}/nextcloud-aio
 mkdir -p ${CONFIG_BASE_DIR}/notifiarr
 mkdir -p ${CONFIG_BASE_DIR}/ofelia
 mkdir -p ${CONFIG_BASE_DIR}/photoprism/{database,storage}
@@ -233,21 +235,23 @@ mkdir -p ${CONFIG_BASE_DIR}/prowlarr
 mkdir -p ${CONFIG_BASE_DIR}/qbittorrent
 mkdir -p ${CONFIG_BASE_DIR}/radarr
 mkdir -p ${CONFIG_BASE_DIR}/readarr
+mkdir -p ${CONFIG_BASE_DIR}/redis
 mkdir -p ${CONFIG_BASE_DIR}/sonarr
 mkdir -p ${CONFIG_BASE_DIR}/syncthing
 mkdir -p ${CONFIG_BASE_DIR}/tdarr/{server,configs,logs,transcode_cache}
 mkdir -p ${CONFIG_BASE_DIR}/unpackerr
 
-# Monitoring Stack
+# Monitoring Stack 
 mkdir -p ${CONFIG_BASE_DIR}/cadvisor
 mkdir -p ${CONFIG_BASE_DIR}/node_exporter
 mkdir -p ${CONFIG_BASE_DIR}/snmp_exporter
 mkdir -p ${CONFIG_BASE_DIR}/speedtest_exporter
 
 # Ebook Services
-mkdir -p ${CONFIG_BASE_DIR}/calibre
+mkdir -p ${CONFIG_BASE_DIR}/calibre/{config,books}
+mkdir -p ${CONFIG_BASE_DIR}/calibre-web
 
-# New Tools & Utilities 
+# New Tools & Utilities  
 mkdir -p ${CONFIG_BASE_DIR}/nextcloud-aio
 mkdir -p ${CONFIG_BASE_DIR}/flaresolverr
 mkdir -p ${CONFIG_BASE_DIR}/pinchflat/{config,downloads}
@@ -270,6 +274,7 @@ mkdir -p ${CONFIG_BASE_DIR}/pinchflat/{config,downloads}
 # mkdir -p ${CONFIG_BASE_DIR}/tautulli
 # mkdir -p ${CONFIG_BASE_DIR}/transmission
 # mkdir -p ${CONFIG_BASE_DIR}/transmission-openvpn
+# mkdir -p ${CONFIG_BASE_DIR}/wallabag/{database,images}
 ```
 
 Copy the resources for **Ofelia** and **Prometheus** to their respective directories:
